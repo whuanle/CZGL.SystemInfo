@@ -251,7 +251,6 @@ namespace CZGL.SystemInfo.Linux
             catch(Exception ex)
             {
                 throw ex;
-                return default;
             }
         }
 

@@ -11,9 +11,16 @@ namespace CZGL.SystemInfo.Info
     [InfoName(ChinaName = "主机运行信息")]
     public class MachineRunInfo
     {
+        /// <summary>
+        /// 静态 MachineRunInfo 实例
+        /// </summary>
         public static MachineRunInfo Instance => new MachineRunInfo();
         private double _thisUsedMem;
         private double _UsedCPUTime;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public MachineRunInfo()
         {
             var proc = Process.GetCurrentProcess();

@@ -14,6 +14,10 @@ namespace CZGL.SystemInfo.Info
         /// 机器名称
         /// </summary>
         public static SystemRunEvnInfo Instance => new SystemRunEvnInfo();
+
+        /// <summary>
+        /// 机器名称
+        /// </summary>
         [InfoName(ChinaName = "机器名称")]
         public string MachineName { get { return Environment.MachineName; } }
 
