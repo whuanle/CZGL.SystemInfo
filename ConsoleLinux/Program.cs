@@ -20,6 +20,7 @@ namespace ConsoleLinux
         {
             var item = info.GetTasks();
             Console.WriteLine("系统中共有进程数    :" + item.Total);
+            Console.WriteLine("正在运行的进程数    :" + item.Running);
         }
 
         public static void RefGet(DynamicInfo info)

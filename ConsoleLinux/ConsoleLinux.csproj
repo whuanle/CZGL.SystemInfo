@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CZGL.SystemInfo\CZGL.SystemInfo.csproj" />
+      <ProjectReference Include="..\CZGL.SystemInfo.Linux\CZGL.SystemInfo.Linux.csproj" />
     </ItemGroup>
 
 </Project>
