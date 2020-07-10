@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CZGL.SystemInfo</name>
+    </assembly>
+    <members>
+        <member name="T:CZGL.SystemInfo.EnvironmentInfo">
+            <summary>
+            获取程序运行信息的类
+            </summary>
+        </member>
+        <member name="M:CZGL.SystemInfo.EnvironmentInfo.GetMachineInfo">
+            <summary>
+            机器的资源信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CZGL.SystemInfo.EnvironmentInfo.GetMachineInfoValue">
+            <summary>
+            获取机器的资源信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CZGL.SystemInfo.EnvironmentInfo.GetSystemPlatformInfo">
+            <summary>
+            获取系统平台信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CZGL.SystemInfo.EnvironmentInfo.GetSystemPlatformInfoValue">
+            <summary>
+            获取系统平台信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CZGL.SystemInfo.EnvironmentInfo.GetSystemRunInfo">
+            <summary>
+            获取系统运行属性信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CZGL.SystemInfo.EnvironmentInfo.GetSystemRunInfoValue">
+            <summary>
+            获取系统运行属性信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CZGL.SystemInfo.EnvironmentInfo.GetEnvironmentVariables">
+            <summary>
+            获取系统全部环境变量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CZGL.SystemInfo.InfoNameAttribute">
+            <summary>
+            别名特性
+            </summary>
+        </member>
+        <member name="T:CZGL.SystemInfo.Info.MachineRunInfo">
+            <summary>
+            当前机器占用资源情况
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.MachineRunInfo.Instance">
+            <summary>
+            静态 MachineRunInfo 实例
+            </summary>
+        </member>
+        <member name="M:CZGL.SystemInfo.Info.MachineRunInfo.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.MachineRunInfo.ThisUsedMem">
+            <summary>
+            当前进程已使用物理内存(单位 kb)
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.MachineRunInfo.APPUsedCPUTime">
+            <summary>
+            当前进程已占耗CPU时间(单位 ms)
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.MachineRunInfo.AllProcessMemory">
+            <summary>
+            系统所有进程各种使用的内存(单位 kb)
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.MachineRunInfo.UsedMemory">
+            <summary>
+            系统已使用内存(单位 kb)
+            </summary>
+        </member>
+        <member name="T:CZGL.SystemInfo.Info.SystemPlatformInfo">
+            <summary>
+            系统平台信息
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemPlatformInfo.Instance">
+            <summary>
+            静态实例
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemPlatformInfo.FrameworkDescription">
+            <summary>
+            运行框架
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemPlatformInfo.OSDescription">
+            <summary>
+            操作系统
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemPlatformInfo.OSVersion">
+            <summary>
+            操作系统版本
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemPlatformInfo.OSArchitecture">
+            <summary>
+            平台架构
+            </summary>
+        </member>
+        <member name="T:CZGL.SystemInfo.Info.SystemRunEvnInfo">
+            <summary>
+            系统运行信息
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemRunEvnInfo.Instance">
+            <summary>
+            机器名称
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemRunEvnInfo.MachineName">
+            <summary>
+            机器名称
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemRunEvnInfo.UserName">
+            <summary>
+            当前关联用户名
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemRunEvnInfo.UserDomainName">
+            <summary>
+            用户网络域名
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemRunEvnInfo.TickCount">
+            <summary>
+            系统已运行时间(毫秒)
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemRunEvnInfo.Version">
+            <summary>
+            Web程序核心框架版本
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemRunEvnInfo.UserInteractive">
+            <summary>
+            是否在交互模式中运行
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemRunEvnInfo.GetLogicalDrives">
+            <summary>
+            分区磁盘
+            </summary>
+        </member>
+        <member name="P:CZGL.SystemInfo.Info.SystemRunEvnInfo.SystemDirectory">
+            <summary>
+            系统目录
+            </summary>
+        </member>
+        <member name="M:CZGL.SystemInfo.TollHelper.GetValues``1(``0)">
+            <summary>
+            获取某个类型的值以及名称
+            </summary>
+            <typeparam name="TInfo"></typeparam>
+            <param name="info"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CZGL.SystemInfo.TollHelper.GetValue``1(``0)">
+            <summary>
+            只获取值
+            </summary>
+            <typeparam name="TInfo"></typeparam>
+            <param name="info"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CZGL.SystemInfo.TollHelper.GetInfoNameValue(System.Collections.Generic.IList{System.Reflection.CustomAttributeData})">
+            <summary>
+            获取 [InfoName] 特性的属性 ChinaName 的值 或设置为属性名称
+            </summary>
+            <param name="attrs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CZGL.SystemInfo.TollHelper.GetPropertyInfoValue(System.Reflection.PropertyInfo,System.Object)">
+            <summary>
+            获取属性的值
+            </summary>
+            <param name="info"></param>
+            <param name="obj">实例</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

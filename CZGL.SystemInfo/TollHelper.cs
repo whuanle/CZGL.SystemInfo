@@ -63,7 +63,7 @@ namespace CZGL.SystemInfo
         /// <returns></returns>
         public static string GetInfoNameValue(IList<CustomAttributeData> attrs)
         {
-            var argument = attrs.FirstOrDefault(x => x.AttributeType.Name == nameof(InfoNameAttribute)).NamedArguments;
+            var argument = attrs.FirstOrDefault(x => x.AttributeType.Name == nameof(InfoNameAttribute))?.NamedArguments;
                 if (argument == null)
                     return null;
                 return argument.FirstOrDefault(x => x.MemberName == nameof(InfoNameAttribute.ChinaName)).TypedValue.Value.ToString();

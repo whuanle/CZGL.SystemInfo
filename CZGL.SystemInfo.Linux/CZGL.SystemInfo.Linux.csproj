@@ -10,6 +10,11 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>CZGL.SystemInfo.Linux.xml</DocumentationFile>
+    <OutputPath>../</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\CZGL.SystemInfo\CZGL.SystemInfo.csproj" />
   </ItemGroup>

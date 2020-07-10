@@ -11,7 +11,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>H:\CZGL.SystemInfo\CZGL.SystemInfo\CZGL.SystemInfo\CZGL.SystemInfo.xml</DocumentationFile>
+    <DocumentationFile>CZGL.SystemInfo.xml</DocumentationFile>
+    <OutputPath>../</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
