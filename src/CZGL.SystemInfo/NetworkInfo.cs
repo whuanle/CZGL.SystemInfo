@@ -221,11 +221,16 @@ namespace CZGL.SystemInfo
         /// 获取物理网卡的 MAC 地址(唯一)，<b>获取当前能够联网的网卡的mac</b>，如果你本次使用wifi上网，下次换成网线接口，那么mac地址会变！
         /// </summary>
         /// <remarks>标记为 "up" 且不是环回或隧道接口</remarks>
-        public static string GetPhysicalMac => NetworkInterface.GetAllNetworkInterfaces()
-                                              .FirstOrDefault(x => x.OperationalStatus == OperationalStatus.Up
-                                              && x.NetworkInterfaceType != NetworkInterfaceType.Loopback
-                                              && x.NetworkInterfaceType != NetworkInterfaceType.Ethernet)
-                                              .GetPhysicalAddress().ToString();
+        public static string GetPhysicalMac =>
+            (Environment.OSVersion.Platform == PlatformID.Unix ?
+             NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault(x =>
+                x.NetworkInterfaceType != NetworkInterfaceType.Loopback &&
+                x.NetworkInterfaceType != NetworkInterfaceType.Ethernet) :
+            NetworkInterface.GetAllNetworkInterfaces()
+                .FirstOrDefault(x => x.OperationalStatus == OperationalStatus.Up
+                && x.NetworkInterfaceType != NetworkInterfaceType.Loopback
+                && x.NetworkInterfaceType != NetworkInterfaceType.Ethernet))
+            .GetPhysicalAddress().ToString();
 
         /// <summary>
         /// Get traffic statistics for the current network card being connected<br />
