@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>annotations</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\index.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CZGL.UIBlazor" Version="0.0.1" />
+  </ItemGroup>
+
+</Project>
