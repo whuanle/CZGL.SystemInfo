@@ -75,5 +75,49 @@ namespace CZGL.SystemInfo
         {
             return DriveInfo.GetDrives().Select(x => new DiskInfo(x)).ToArray();
         }
+
+        /// <summary>
+        /// 获取 Docker 运行的容器，其容器文件系统在主机中的存储位置
+        /// </summary>
+        /// <returns></returns>
+        public static DiskInfo[] GetContainerMerge()
+        {
+            return DriveInfo.GetDrives()
+                 .Where(x => x.DriveFormat.Equals("overlay", StringComparison.OrdinalIgnoreCase) && x.DriveFormat.Contains("docker"))
+                 .Select(x => new DiskInfo(x)).ToArray();
+        }
+
+
+        /// <summary>
+        /// 筛选出能够使用的真正的磁盘
+        /// </summary>
+        /// <returns></returns>
+        public static DiskInfo[] GetRealDisk()
+        {
+            var disks = DriveInfo.GetDrives()
+            .Where(x =>
+            x.DriveType == System.IO.DriveType.Fixed &&
+            x.TotalSize != 0 && x.DriveFormat != "overlay");
+
+            return disks.Select(x => new DiskInfo(x))
+                .Distinct(new DiskInfoEquality()).ToArray();
+        }
+
+        /// <summary>
+        /// 筛选重复项
+        /// </summary>
+        private class DiskInfoEquality : IEqualityComparer<DiskInfo>
+        {
+            public bool Equals(DiskInfo x, DiskInfo y)
+            {
+                return x.Id == y.Id;
+            }
+
+            public int GetHashCode(DiskInfo obj)
+            {
+                return obj.Id.GetHashCode();
+            }
+        }
     }
+
 }

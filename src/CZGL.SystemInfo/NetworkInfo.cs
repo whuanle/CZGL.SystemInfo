@@ -13,7 +13,7 @@ namespace CZGL.SystemInfo
     /// <summary>
     /// 网络接口信息
     /// </summary>
-    public class NetworkInfo
+    public partial class NetworkInfo
     {
         private NetworkInterface _instance;
         public NetworkInterface NetworkInterface => _instance;
@@ -181,39 +181,79 @@ namespace CZGL.SystemInfo
         /// </summary>
         public IPAddress AddressIpv4 => _AddressIpv4.Value;
 
-
         #endregion
 
         /// <summary>
         /// Internet speed<br />
         /// 获取当前网卡的网络速度<br />
+        /// <code>
+        /// var speed = new NetworkInfo.InternetSpeed();<br />
+        /// var result = GetInternetSpeed(ref speed)
+        /// </code>
         /// </summary>
         /// <param name="Milliseconds">间隔时间</param>
         /// <returns></returns>
-        public (int Received, int Send) GetInternetSpeed(int Milliseconds)
+        public ref InternetSpeed GetInternetSpeed(ref InternetSpeed speed, int Milliseconds = 1000)
         {
             var newNetwork = NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault(x => x.Id == this.Id).GetIPStatistics();
 
-            long rec = ReceivedLength;
-            long send = SendLength;
-            Thread.Sleep(Milliseconds);
-            return ((int)(newNetwork.BytesReceived - rec), (int)(newNetwork.BytesSent - send));
+            long rec = newNetwork.BytesReceived;
+            long send = newNetwork.BytesSent;
+
+            var time = DateTime.Now;
+            var second = (time - speed.LastTime).TotalSeconds;
+
+            if (speed.IsNotNull)
+            {
+                Thread.Sleep(Milliseconds);
+                speed._ReceivedSizeInfo = SizeInfo.Get(newNetwork.BytesReceived - speed.LastRec);
+                speed._ReceivedSizeInfo.Size = Math.Round(speed._ReceivedSizeInfo.Size / (decimal)second, 1);
+                speed._SentSizeInfo = SizeInfo.Get(newNetwork.BytesSent - speed.LastSend);
+                speed._SentSizeInfo.Size = Math.Round(speed._SentSizeInfo.Size / (decimal)second, 1);
+            }
+
+            speed.IsNotNull = true;
+            speed.LastSend = send;
+            speed.LastRec = rec;
+            speed.LastTime = time;
+            return ref speed;
         }
 
         /// <summary>
         /// Internet speed<br />
         /// 获取当前网卡的网络速度<br />
+        /// <code>
+        /// var speed = new NetworkInfo.InternetSpeed();<br />
+        /// var result = GetInternetSpeedIpv4(ref speed)
+        /// </code>
         /// </summary>
         /// <param name="Milliseconds">间隔时间</param>
         /// <returns></returns>
-        public (int Received, int Send) GetInternetSpeedIpv4(int Milliseconds)
+        public ref InternetSpeed GetInternetSpeedIpv4(ref InternetSpeed speed, int Milliseconds)
         {
             var newNetwork = NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault(x => x.Id == this.Id).GetIPv4Statistics();
 
-            long rec = ReceivedLengthIpv4;
-            long send = SendLengthIpv4;
-            Thread.Sleep(Milliseconds);
-            return ((int)(newNetwork.BytesReceived - rec), (int)(newNetwork.BytesSent - send));
+            long rec = newNetwork.BytesReceived;
+            long send = newNetwork.BytesSent;
+
+            var time = DateTime.Now;
+            var second = (time - speed.LastTime).TotalSeconds;
+
+            if (speed.IsNotNull)
+            {
+                Thread.Sleep(Milliseconds);
+                speed._ReceivedSizeInfo = SizeInfo.Get(newNetwork.BytesReceived - speed.LastRec);
+                speed._ReceivedSizeInfo.Size = Math.Round(speed._ReceivedSizeInfo.Size / (decimal)second, 1);
+                speed._SentSizeInfo = SizeInfo.Get(newNetwork.BytesSent - speed.LastSend);
+                speed._SentSizeInfo.Size = Math.Round(speed._SentSizeInfo.Size / (decimal)second, 1);
+            }
+
+            speed.IsNotNull = true;
+            speed.LastSend = send;
+            speed.LastRec = rec;
+            speed.LastTime = time;
+
+            return ref speed;
         }
 
         /// <summary>
@@ -224,12 +264,10 @@ namespace CZGL.SystemInfo
         public static string GetPhysicalMac =>
             (Environment.OSVersion.Platform == PlatformID.Unix ?
              NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault(x =>
-                x.NetworkInterfaceType != NetworkInterfaceType.Loopback &&
-                x.NetworkInterfaceType != NetworkInterfaceType.Ethernet) :
+                x.NetworkInterfaceType != NetworkInterfaceType.Loopback) :
             NetworkInterface.GetAllNetworkInterfaces()
                 .FirstOrDefault(x => x.OperationalStatus == OperationalStatus.Up
-                && x.NetworkInterfaceType != NetworkInterfaceType.Loopback
-                && x.NetworkInterfaceType != NetworkInterfaceType.Ethernet))
+                && x.NetworkInterfaceType != NetworkInterfaceType.Loopback))
             .GetPhysicalAddress().ToString();
 
         /// <summary>
@@ -238,17 +276,28 @@ namespace CZGL.SystemInfo
         /// </summary>
         /// <param name="Milliseconds"></param>
         /// <returns></returns>
-        public static (int Received, int send) GetNowInternetSpeed(int Milliseconds)
+        public static InternetSpeed GetNowInternetSpeed(int Milliseconds = 1000)
         {
             if (!NetworkInterface.GetIsNetworkAvailable())
-                return (0, 0);
+                return new InternetSpeed();
 
             NetworkInterface inter = GetNetworkInfo().NetworkInterface;
             var statistics = inter.GetIPStatistics();
+
             long rec = statistics.BytesReceived;
             long send = statistics.BytesSent;
+            if (Milliseconds == 0) Milliseconds = 1;
             Thread.Sleep(Milliseconds);
-            return ((int)(statistics.BytesReceived - rec), (int)(statistics.BytesSent - send));
+            var speed = new InternetSpeed
+            {
+                LastRec = statistics.BytesReceived,
+                LastSend = statistics.BytesSent,
+                _ReceivedSizeInfo = SizeInfo.Get(statistics.BytesReceived - rec),
+                _SentSizeInfo = SizeInfo.Get(statistics.BytesSent - send)
+            };
+            speed._ReceivedSizeInfo.Size = Math.Round(speed._ReceivedSizeInfo.Size / (decimal)Milliseconds, 1);
+            speed._SentSizeInfo.Size = Math.Round(speed._SentSizeInfo.Size / (decimal)Milliseconds, 1);
+            return speed;
         }
 
         /// <summary>
@@ -280,13 +329,11 @@ namespace CZGL.SystemInfo
         {
             if (Environment.OSVersion.Platform == PlatformID.Unix)
                 return new NetworkInfo(NetworkInterface.GetAllNetworkInterfaces()
-                                  .FirstOrDefault(x => x.NetworkInterfaceType != NetworkInterfaceType.Loopback
-                                  && x.NetworkInterfaceType != NetworkInterfaceType.Ethernet));
+                                  .FirstOrDefault(x => x.NetworkInterfaceType != NetworkInterfaceType.Loopback));
 
             return new NetworkInfo(NetworkInterface.GetAllNetworkInterfaces()
                                               .FirstOrDefault(x => x.OperationalStatus == OperationalStatus.Up
-                                              && x.NetworkInterfaceType != NetworkInterfaceType.Loopback
-                                              && x.NetworkInterfaceType != NetworkInterfaceType.Ethernet));
+                                              && x.NetworkInterfaceType != NetworkInterfaceType.Loopback));
         }
 
         /// <summary>

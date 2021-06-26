@@ -1,5 +1,6 @@
 ﻿using CZGL.SystemInfo;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
@@ -84,22 +85,27 @@ namespace CZGLSystemInfo
             {
                 try
                 {
+                    var speed = new InternetSpeed();
                     while (true)
                     {
                         if (isStop)
                             return;
-                        var tmp = info.GetInternetSpeed(1000);
+                        var tmp = info.GetInternetSpeed(ref speed,1000);
                         if (isStop)
                             return;
 
-                        Console.WriteLine($"网络上传速度：{tmp.Send / 1024} kb/s");
-                        Console.WriteLine($"网络下载速度：{tmp.Received / 1024} kb/s");
+                        var send = tmp.Sent;
+                        var received = tmp.Received;
+
+                        Console.WriteLine($"网络上传速度：{send.Size} {send.SizeType}/S");
+                        Console.WriteLine($"网络下载速度：{received.Size} {received.SizeType}/S");
 
                         Thread.Sleep(500);
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
+                    Debug.WriteLine(ex);
                     Console.WriteLine("你的操作系统不支持此功能！按下任意键继续输入命令");
                     return;
                 }

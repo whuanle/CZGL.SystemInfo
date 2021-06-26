@@ -19,7 +19,7 @@ namespace Consoletest
     {
         public static void Main()
         {
-            Console.WriteLine(NetworkInfo.GetPhysicalMac);
+            var tmp = NetworkInterface.GetAllNetworkInterfaces();
             Console.ReadKey();
         }
     }
