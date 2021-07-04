@@ -2,6 +2,12 @@
 
 CZGL.ProcessMetrics 是一个 Metrics 库，能够将程序的 GC、CPU、内存、机器网络、磁盘空间等信息记录下来，使用 Prometheus 采集信息，然后使用 Grafana 显示。
 
+视频地址：
+
+[https://www.bilibili.com/video/BV18y4y1K7Ax/](https://www.bilibili.com/video/BV18y4y1K7Ax/)
+
+教程地址：[https://github.com/whuanle/CZGL.SystemInfo/blob/primary/docs/Metrics.md](https://github.com/whuanle/CZGL.SystemInfo/blob/primary/docs/Metrics.md)
+
 效果图预览：
 
 ![3](.images/3.png)
@@ -11,6 +17,8 @@ CZGL.ProcessMetrics 是一个 Metrics 库，能够将程序的 GC、CPU、内存
 
 
 ### 安装 ProcsssMetrics
+
+只需要通过 Nuget 安装一个库，即可快速为程序添加资源监视。
 
 新建一个 ASP.NET Core 应用， Nuget 中搜索 `CZGL.ProcessMetrics` 直接引用即可。
 
@@ -26,17 +34,19 @@ Nuget 地址：[https://www.nuget.org/packages/CZGL.ProcessMetrics](https://www.
             });
 ```
 
-访问相应的 URL，可以看到有很多信息输出。
+访问相应的 URL，可以看到有很多信息输出，这些都是 Prometheus 数据的格式。
 
 ```
 http://127.0.0.1:1234/metrics
 ```
 
-![10](H:\CZGL.SystemInfo\CZGL.SystemInfo\docs\.images\10.png)
+![10](./.images/10.png)
 
 
 
 ### 搭建 Prometheus/Grafana
+
+这里我们使用 Docker 来搭建监控平台。
 
 拉取镜像：
 
@@ -105,7 +115,7 @@ docker run -d   -p 3000:3000   --name=grafana   -v /opt/grafana-storage:/var/lib
 
 打开 9090 端口，在菜单栏中打开 `Status-Targets`，可以看到有相关记录。
 
-![6](H:\CZGL.SystemInfo\CZGL.SystemInfo\docs\.images\6.png)
+![6](./.images/6.png)
 
 接着，访问 3000 端口，打开 Grafana，初始账号密码都是 admin 。
 
@@ -115,14 +125,26 @@ docker run -d   -p 3000:3000   --name=grafana   -v /opt/grafana-storage:/var/lib
 
 首先我们要为 Grafana 获取 Prometheus 中的监控数据，我们要添加一个数据源。
 
-![11](H:\CZGL.SystemInfo\CZGL.SystemInfo\docs\.images\11.jpg)
+![11](./.images/11.jpg)
 
 选择 Prometheus，按照提示，填写好 `HTTP-URL` 即可。
 
-![12](H:\CZGL.SystemInfo\CZGL.SystemInfo\docs\.images\12.jpg)
+![12](./.images/12.jpg)
 
 
 
-接着，下载笔者定制好的 Jsom Model。
+接着，下载笔者定制好的 Jsom Model，文件名为 `CZGL.ProcessMetrics.json`。
 
 下载地址：
+[https://github.com/whuanle/CZGL.SystemInfo/releases/tag/v1.0](https://github.com/whuanle/CZGL.SystemInfo/releases/tag/v1.0)
+
+然后导入模型文件。
+
+![7](./.images/7.jpg)
+![8](./.images/8.png)
+
+
+
+即可看到监控界面。
+
+![metrics](./.images/metrics.gif)
