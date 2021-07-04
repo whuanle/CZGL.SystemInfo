@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -13,13 +14,11 @@ using CZGL.SystemInfo;
 
 namespace Consoletest
 {
-
-    // 支持 Linux 和 Windows
     class Program
     {
+
         public static void Main()
         {
-            var tmp = NetworkInterface.GetAllNetworkInterfaces();
             Console.ReadKey();
         }
     }

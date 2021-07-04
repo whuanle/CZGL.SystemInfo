@@ -21,6 +21,7 @@ namespace CZGL.SystemInfo
         private NetworkInfo(NetworkInterface network)
         {
             _instance = network;
+            speed = new InternetSpeed();
             _Statistics = new Lazy<IPInterfaceStatistics>(() => _instance.GetIPStatistics());
             _Ipv4Statistics = new Lazy<IPv4InterfaceStatistics>(() => _instance.GetIPv4Statistics());
             _AddressIpv6 = new Lazy<IPAddress>(() => _instance.GetIPProperties().UnicastAddresses
@@ -29,6 +30,7 @@ namespace CZGL.SystemInfo
             .FirstOrDefault(x => !x.IPv4Mask.ToString().Equals("0.0.0.0")).Address);
         }
 
+        #region 接口信息
         /// <summary>
         /// Gets the identifier of the network adapter<br />
         /// 获取网络适配器的标识符
@@ -77,7 +79,10 @@ namespace CZGL.SystemInfo
         /// </summary>
         public NetworkInterfaceType NetworkType => _instance.NetworkInterfaceType;
 
-        #region 网络流量信息W
+
+        #endregion
+
+        #region 网络流量信息
 
         private Lazy<IPInterfaceStatistics> _Statistics;
 
@@ -183,6 +188,36 @@ namespace CZGL.SystemInfo
 
         #endregion
 
+
+        private InternetSpeed speed;
+
+
+        public InternetSpeed GetInternetSpeed()
+        {
+            var newNetWorkInterface = _instance;
+            var newNetwork = newNetWorkInterface.GetIPStatistics();
+
+            long rec = newNetwork.BytesReceived;
+            long send = newNetwork.BytesSent;
+
+            var time = DateTime.Now;
+            var second = (time - speed.LastTime).TotalSeconds;
+
+            if (speed.IsNotNull)
+            {
+                speed._ReceivedSizeInfo = SizeInfo.Get(newNetwork.BytesReceived - speed.LastRec);
+                speed._ReceivedSizeInfo.Size = Math.Round(speed._ReceivedSizeInfo.Size / (decimal)second, 1);
+                speed._SentSizeInfo = SizeInfo.Get(newNetwork.BytesSent - speed.LastSend);
+                speed._SentSizeInfo.Size = Math.Round(speed._SentSizeInfo.Size / (decimal)second, 1);
+            }
+
+            speed.IsNotNull = true;
+            speed.LastSend = send;
+            speed.LastRec = rec;
+            speed.LastTime = time;
+            return speed;
+        }
+
         /// <summary>
         /// Internet speed<br />
         /// 获取当前网卡的网络速度<br />
@@ -191,11 +226,14 @@ namespace CZGL.SystemInfo
         /// var result = GetInternetSpeed(ref speed)
         /// </code>
         /// </summary>
+        /// <param name="speed"></param>
         /// <param name="Milliseconds">间隔时间</param>
+        /// <param name="ip4"></param>
         /// <returns></returns>
         public ref InternetSpeed GetInternetSpeed(ref InternetSpeed speed, int Milliseconds = 1000)
         {
-            var newNetwork = NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault(x => x.Id == this.Id).GetIPStatistics();
+            var newNetWorkInterface = _instance;
+            var newNetwork = newNetWorkInterface.GetIPStatistics();
 
             long rec = newNetwork.BytesReceived;
             long send = newNetwork.BytesSent;
@@ -219,122 +257,6 @@ namespace CZGL.SystemInfo
             return ref speed;
         }
 
-        /// <summary>
-        /// Internet speed<br />
-        /// 获取当前网卡的网络速度<br />
-        /// <code>
-        /// var speed = new NetworkInfo.InternetSpeed();<br />
-        /// var result = GetInternetSpeedIpv4(ref speed)
-        /// </code>
-        /// </summary>
-        /// <param name="Milliseconds">间隔时间</param>
-        /// <returns></returns>
-        public ref InternetSpeed GetInternetSpeedIpv4(ref InternetSpeed speed, int Milliseconds)
-        {
-            var newNetwork = NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault(x => x.Id == this.Id).GetIPv4Statistics();
-
-            long rec = newNetwork.BytesReceived;
-            long send = newNetwork.BytesSent;
-
-            var time = DateTime.Now;
-            var second = (time - speed.LastTime).TotalSeconds;
-
-            if (speed.IsNotNull)
-            {
-                Thread.Sleep(Milliseconds);
-                speed._ReceivedSizeInfo = SizeInfo.Get(newNetwork.BytesReceived - speed.LastRec);
-                speed._ReceivedSizeInfo.Size = Math.Round(speed._ReceivedSizeInfo.Size / (decimal)second, 1);
-                speed._SentSizeInfo = SizeInfo.Get(newNetwork.BytesSent - speed.LastSend);
-                speed._SentSizeInfo.Size = Math.Round(speed._SentSizeInfo.Size / (decimal)second, 1);
-            }
-
-            speed.IsNotNull = true;
-            speed.LastSend = send;
-            speed.LastRec = rec;
-            speed.LastTime = time;
-
-            return ref speed;
-        }
-
-        /// <summary>
-        /// Get the MAC address of the physical network card (unique)<br />
-        /// 获取物理网卡的 MAC 地址(唯一)，<b>获取当前能够联网的网卡的mac</b>，如果你本次使用wifi上网，下次换成网线接口，那么mac地址会变！
-        /// </summary>
-        /// <remarks>标记为 "up" 且不是环回或隧道接口</remarks>
-        public static string GetPhysicalMac =>
-            (Environment.OSVersion.Platform == PlatformID.Unix ?
-             NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault(x =>
-                x.NetworkInterfaceType != NetworkInterfaceType.Loopback) :
-            NetworkInterface.GetAllNetworkInterfaces()
-                .FirstOrDefault(x => x.OperationalStatus == OperationalStatus.Up
-                && x.NetworkInterfaceType != NetworkInterfaceType.Loopback))
-            .GetPhysicalAddress().ToString();
-
-        /// <summary>
-        /// Get traffic statistics for the current network card being connected<br />
-        /// 获取当前正在联网的网卡流量统计
-        /// </summary>
-        /// <param name="Milliseconds"></param>
-        /// <returns></returns>
-        public static InternetSpeed GetNowInternetSpeed(int Milliseconds = 1000)
-        {
-            if (!NetworkInterface.GetIsNetworkAvailable())
-                return new InternetSpeed();
-
-            NetworkInterface inter = GetNetworkInfo().NetworkInterface;
-            var statistics = inter.GetIPStatistics();
-
-            long rec = statistics.BytesReceived;
-            long send = statistics.BytesSent;
-            if (Milliseconds == 0) Milliseconds = 1;
-            Thread.Sleep(Milliseconds);
-            var speed = new InternetSpeed
-            {
-                LastRec = statistics.BytesReceived,
-                LastSend = statistics.BytesSent,
-                _ReceivedSizeInfo = SizeInfo.Get(statistics.BytesReceived - rec),
-                _SentSizeInfo = SizeInfo.Get(statistics.BytesSent - send)
-            };
-            speed._ReceivedSizeInfo.Size = Math.Round(speed._ReceivedSizeInfo.Size / (decimal)Milliseconds, 1);
-            speed._SentSizeInfo.Size = Math.Round(speed._SentSizeInfo.Size / (decimal)Milliseconds, 1);
-            return speed;
-        }
-
-        /// <summary>
-        /// Get traffic statistics for the current network card being connected<br />
-        /// 获取当前正在联网的网卡流量统计
-        /// </summary>
-        /// <param name="Milliseconds"></param>
-        /// <returns></returns>
-        public static (int Received, int send) GetNowInternetSpeedIpv4(int Milliseconds)
-        {
-            if (!NetworkInterface.GetIsNetworkAvailable())
-                return (0, 0);
-
-            NetworkInterface inter = NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault(x => x.OperationalStatus == OperationalStatus.Up);
-            var statistics = inter.GetIPv4Statistics();
-            long rec = statistics.BytesReceived;
-            long send = statistics.BytesSent;
-            Thread.Sleep(Milliseconds);
-            return ((int)(statistics.BytesReceived - rec), (int)(statistics.BytesSent - send));
-        }
-
-
-        /// <summary>
-        /// Network card information currently in the network<br />
-        /// 当前正在联网的网卡信息<br />标记为 "up" 且不是环回或隧道接口
-        /// </summary>
-        /// <returns></returns>
-        public static NetworkInfo GetNetworkInfo()
-        {
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
-                return new NetworkInfo(NetworkInterface.GetAllNetworkInterfaces()
-                                  .FirstOrDefault(x => x.NetworkInterfaceType != NetworkInterfaceType.Loopback));
-
-            return new NetworkInfo(NetworkInterface.GetAllNetworkInterfaces()
-                                              .FirstOrDefault(x => x.OperationalStatus == OperationalStatus.Up
-                                              && x.NetworkInterfaceType != NetworkInterfaceType.Loopback));
-        }
 
         /// <summary>
         /// All network card information<br />
@@ -344,6 +266,15 @@ namespace CZGL.SystemInfo
         public static NetworkInfo[] GetNetworkInfos()
         {
             return NetworkInterface.GetAllNetworkInterfaces().Select(x => new NetworkInfo(x)).ToArray();
+        }
+
+        public static NetworkInfo[] GetRealNetworkInfos()
+        {
+            return
+                NetworkInterface.GetAllNetworkInterfaces()
+                .Where(x => x.OperationalStatus == OperationalStatus.Up
+                && x.NetworkInterfaceType != NetworkInterfaceType.Loopback).Select(x => new NetworkInfo(x))
+                .ToArray();
         }
 
     }

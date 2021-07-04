@@ -9,6 +9,8 @@ namespace CZGL.SystemInfo
     /// </summary>
     public struct SizeInfo
     {
+        private long _OriginSize;
+        public long OriginSize => _OriginSize;
         /// <summary>
         /// 大小
         /// </summary>
@@ -34,7 +36,8 @@ namespace CZGL.SystemInfo
                 return new SizeInfo
                 {
                     Size = (decimal)(size),
-                    SizeType = SizeType.B
+                    SizeType = SizeType.B,
+                    _OriginSize = size
                 };
             }
             if (size < 1024 * 1024)
@@ -42,7 +45,8 @@ namespace CZGL.SystemInfo
                 return new SizeInfo
                 {
                     Size = Math.Round((decimal)size / 1024, 1),
-                    SizeType = SizeType.KB
+                    SizeType = SizeType.KB,
+                    _OriginSize = size
                 };
             }
             if (size < 1024 * 1024 * 1024)
@@ -50,7 +54,8 @@ namespace CZGL.SystemInfo
                 return new SizeInfo
                 {
                     Size = Math.Round((decimal)(size >> 19) / 2),
-                    SizeType = SizeType.MB
+                    SizeType = SizeType.MB,
+                    _OriginSize = size
                 };
             }
 
@@ -59,7 +64,8 @@ namespace CZGL.SystemInfo
                 return new SizeInfo
                 {
                     Size = Math.Round((decimal)(size >> 29) / 2),
-                    SizeType = SizeType.GB
+                    SizeType = SizeType.GB,
+                    _OriginSize = size
                 };
             }
 

@@ -67,7 +67,7 @@ csys
 
 动图：
 
-![csys](./docs/csys.gif)
+![csys](./doc/.images/docs/csys.gif)
 
 小工具功能不多，有兴趣可以下载 Nuget 包，里面有更多功能。
 
@@ -81,58 +81,6 @@ CZGL.SystemInfo 目前有四个类：DiskInfo、NetworkInfo、ProcessInfo、Syst
 
 ```csharp
 Install-Package CZGL.SystemInfo -Version 1.0.1
-```
-
-
-
-### SystemPlatformInfo
-
-静态类，能够获取运行环境信息和有限的硬件信息，所有信息在程序启动前就已经确定。
-
-其 API 说明及获得的数据示例如下：
-
-|属性|说明| Windows 示例                      |Linux 示例|
-|---|---|---|---|
-|FrameworkDescription|框架平台(.NET Core、Mono等)信息|.NET Core 3.1.9|.NET Core 3.1.9|
-|FrameworkVersion| 运行时信息版本                  |3.1.9|3.1.9|
-|OSArchitecture|操作系统平台架构|X64|X64|
-|OSPlatformID|获取操作系统的类型|Win32NT|Unix|
-|OSVersion|操作系统内核版本|Microsoft Windows NT 6.2.9200.0|Unix 4.4.0.19041|
-|OSDescription|操作系统的版本描述|Microsoft Windows 10.0.19041|Linux 4.4.0-19041-Microsoft #488-Microsoft Mon Sep 01 13:43:00 PST 2020|
-|ProcessArchitecture|本进程的架构|X64|X64|
-|ProcessorCount|当前计算机上的处理器数|8|8|
-|MachineName|计算机名称|dell-PC|dell-PC|
-|UserName|当前登录到此系统的用户名称|dell|dell|
-|UserDomainName|用户网络域名称|dell-PC|dell-PC|
-|IsUserInteractive|是否在交互模式中运行|True|True|
-|GetLogicalDrives|系统的磁盘和分区列表|D:\, E:\, F:\, G:\, H:\, J:\, X:\|/, /dev, /sys, /proc, /dev/pts, /run, /run/lock, /run/shm|
-|SystemDirectory|系统根目录完全路径|X:\WINDOWS\system32||
-|MemoryPageSize|操作系统内存页一页的字节数|4096|4096|
-
-SystemPlatformInfo 的 API 不会有跨平台不兼容问题，可以大胆使用。
-
-效果演示：
-
-```csharp
-系统平台信息：
-
-运行框架    :    .NET Core 3.1.0
-操作系统    :    Microsoft Windows 10.0.17763
-操作系统版本    :    Microsoft Windows NT 6.2.9200.0
-平台架构    :    X64
-机器名称    :    aaaa-PC
-当前关联用户名    :    aaa
-用户网络域名    :    aaa-PC
-系统已运行时间(毫秒)    :    3227500
-Web程序核心框架版本    :    3.1.0
-是否在交互模式中运行    :    True
-分区磁盘    :    D:\, E:\, F:\, G:\, H:\, X:\
-系统目录    :    X:\windows\system32
-当前进程已使用物理内存    :    20020
-当前进程已占耗CPU时间    :    328.125
-系统所有进程各种使用的内存    :    System.Collections.Generic.KeyValuePair`2[System.String,System.Int64][]
-系统已使用内存    :    5988340
-VisualStudioVersion    :    16.0
 ```
 
 
