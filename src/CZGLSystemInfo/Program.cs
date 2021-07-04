@@ -44,7 +44,7 @@ namespace CZGLSystemInfo
         /// </summary>
         private static void NETINFO()
         {
-            var info = NetworkInfo.GetNetworkInfo();
+            var info = NetworkInfo.GetRealNetworkInfos().First();
             if (info == null)
             {
                 Console.WriteLine("未能获取网卡，操作终止");
@@ -79,7 +79,7 @@ namespace CZGLSystemInfo
         private static void NET_T()
         {
             Console.WriteLine("开始监控流量，如需停止，可以按下任意键");
-            var info = NetworkInfo.GetNetworkInfo();
+            var info = NetworkInfo.GetRealNetworkInfos().First();
             bool isStop = false;
             Thread thread = new Thread(() =>
             {
@@ -154,7 +154,7 @@ namespace CZGLSystemInfo
 
 
             var type3 = typeof(NetworkInfo);
-            var network = NetworkInfo.GetNetworkInfo();
+            var network = NetworkInfo.GetRealNetworkInfos();
             foreach (var item in type3.GetProperties())
             {
                 Console.WriteLine("----------------------------");
@@ -224,14 +224,13 @@ namespace CZGLSystemInfo
                     {
                         if (isStop)
                             return;
-                        decimal count = ProcessInfo.GetCpuPercentage(pid) * 100;
+                        decimal count = ProcessInfo.GetCpuUsage(info);
 
                         Console.WriteLine($"进程名称 :     {info.ProcessName}");
                         Console.WriteLine($"所属模块 :     {info.MainModule} Byte");
                         Console.WriteLine($"进程启动时间 :  {info.StartTime.ToString("yyyy-MM-dd HH:mm:ss")}");
                         Console.WriteLine($"CPU :         {count}% ");
                         Console.WriteLine($"已用内存 :      {info.PhysicalUsedMemory} Byte");
-                        Console.WriteLine($"最大可用内存 :  {info.MaxMemory} Byte");
 
                         if (isStop)
                             return;

@@ -4,21 +4,74 @@ CZGL.SystemInfo 是一个支持 Windows 和 Linux 等平台的能够获取机器
 
 在不引入额外依赖的情况下，使用 .NET Runtime 本身的 API，或通过计算获得信息，提供高性能的计算方式以及缓存，提高性能，还提供 dotnet tool 工具，通过命令行在终端使用。 
 
-由于此库完全是重写，因此跟旧版本的 API 完全不同，旧版本地址：
 
-旧版本 GitHub： https://github.com/whuanle/CZGL.SystemInfo/tree/0.1
-
-旧版本使用教程： https://www.cnblogs.com/whuanle/p/12435413.html
-
-Nuget 搜索 `CZGL.SystemInfo` 即可安装，版本为 1.0 。
-
-类库中每一个属性和方法，我都加上了贴心的注释以及 return 示例。
-
-CZGL.SystemInfo.Linux 优化部分代码，其余无变化。
 
 Windows 可以使用 System.Diagnostics.PerformanceCounter 、System.Management.ManagementObjectSearcher 分别获得性能计算器以及机器的 CPU型号、磁盘序列化号等信息。
 
 平台差异而且很难统一，所以如获取某些硬件的型号序列化，获得进程信息的资源信息，这些需求调用系统相关的API或者使用命令行操作，需要自己定制。
+
+
+
+### 预览
+
+CZGL.ProcessMetrics 是一个 Metrics 库，能够将程序的 GC、CPU、内存、机器网络、磁盘空间等信息记录下来，使用 Prometheus 采集信息，然后使用 Grafana 显示。
+
+![1](./docs/.images/1.png)
+
+![2](./docs/.images/2.png)
+
+![3](./docs/.images/3.png)
+
+![4](./docs/.images/4.png)
+
+![5](./docs/.images/5.png)
+
+
+
+### 使用在线监控
+
+可通过 Prometheus 采集程序信息，接着使用 Grafana 分析、显示数据。
+
+在 Nuget 中，搜索 `CZGL.ProcessMetrics` 包，然后使用中间件生成 Metrics 端点。
+
+```csharp
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.ProcessMetrices("/metrics");
+            });
+```
+
+
+
+访问 `/metrics` 可以查看到记录的信息。
+
+打开 Prometheus 的 prometheus.yml 文件，在最后加上：
+
+```yaml
+  - job_name: 'processmetrice'
+    metrics_path: '/metrics'
+    static_configs:
+    - targets: ['106.12.123.123:1234']
+```
+
+> 请修改上面的 IP。
+
+
+
+然后重启 Prometheus ，打开 Prometheus 的 Status-Targets，即可看到已被加入监控。
+
+![6](./docs/.images/6.png)
+
+按照 [https://prometheus.io/docs/visualization/grafana/](https://prometheus.io/docs/visualization/grafana/) 配置好 Prometheus 。
+
+
+
+然后下载  [CZGL.ProcessMetrics.json](docs/CZGL.ProcessMetrics.json)  文件，在 Grafana 中导入。
+
+![7](./docs/.images/7.jpg)
+
+![8](./docs/.images/8.png)
 
 
 
@@ -67,7 +120,9 @@ csys
 
 动图：
 
-![csys](./doc/.images/docs/csys.gif)
+![csys](./docs/.images/csys.gif)
+
+
 
 小工具功能不多，有兴趣可以下载 Nuget 包，里面有更多功能。
 
@@ -85,9 +140,55 @@ Install-Package CZGL.SystemInfo -Version 1.0.1
 
 
 
+#### SystemPlatformInfo
+
+静态类，能够获取运行环境信息和有限的硬件信息，所有信息在程序启动前就已经确定。
+
+其 API 说明及获得的数据示例如下：
+
+| 属性                 | 说明                            | Windows 示例                    | Linux 示例                                                   |
+| -------------------- | ------------------------------- | ------------------------------- | ------------------------------------------------------------ |
+| FrameworkDescription | 框架平台(.NET Core、Mono等)信息 | .NET Core 3.1.9                 | .NET Core 3.1.9                                              |
+| FrameworkVersion     | 运行时信息版本                  | 3.1.9                           | 3.1.9                                                        |
+| OSArchitecture       | 操作系统平台架构                | X64                             | X64                                                          |
+| OSPlatformID         | 获取操作系统的类型              | Win32NT                         | Unix                                                         |
+| OSVersion            | 操作系统内核版本                | Microsoft Windows NT 6.2.9200.0 | Unix 4.4.0.19041                                             |
+| OSDescription        | 操作系统的版本描述              | Microsoft Windows 10.0.19041    | Linux 4.4.0-19041-Microsoft #488-Microsoft Mon Sep 01 13:43:00 PST 2020 |
+| ProcessArchitecture  | 本进程的架构                    | X64                             | X64                                                          |
+| ProcessorCount       | 当前计算机上的处理器数          | 8                               | 8                                                            |
+| MachineName          | 计算机名称                      | dell-PC                         | dell-PC                                                      |
+| UserName             | 当前登录到此系统的用户名称      | dell                            | dell                                                         |
+| UserDomainName       | 用户网络域名称                  | dell-PC                         | dell-PC                                                      |
+| IsUserInteractive    | 是否在交互模式中运行            | True                            | True                                                         |
+| GetLogicalDrives     | 系统的磁盘和分区列表            | C:\,D:\, E:\, F:\, G:\          | /, /dev, /sys, /proc, /dev/pts, /run, /run/shm               |
+| SystemDirectory      | 系统根目录完全路径              | X:\WINDOWS\system32             |                                                              |
+| MemoryPageSize       | 操作系统内存页一页的字节数      | 4096                            | 4096                                                         |
+
+SystemPlatformInfo 的 API 不会有跨平台不兼容问题，可以大胆使用。
+
+效果演示：
+
+```csharp
+系统平台信息：
+
+运行框架    :    .NET Core 3.1.0
+操作系统    :    Microsoft Windows 10.0.17763
+操作系统版本    :    Microsoft Windows NT 6.2.9200.0
+平台架构    :    X64
+机器名称    :    aaaa-PC
+当前关联用户名    :    aaa
+用户网络域名    :    aaa-PC
+系统已运行时间(毫秒)    :    3227500
+Web程序核心框架版本    :    3.1.0
+是否在交互模式中运行    :    True
+分区磁盘    :    C:\,D:\, E:\, F:\, G:\, H:\ 
+系统目录    :    C:\windows\system32
+... ...
+```
 
 
-### ProcessInfo
+
+#### ProcessInfo
 
 需要使用超级管理员启动程序，才能使用此功能；
 
@@ -160,7 +261,7 @@ PhysicalUsedMemory 属性值返回的值表示进程使用的可分页系统内�
 
 
 
-### NetworkInfo
+#### NetworkInfo
 
 NetworkInfo 能够获取网络接口信息。
 
@@ -279,7 +380,9 @@ GetPhysicalMac E69D3116D514
 
 注意，因为有些 API ，Linux 下环境差异比较大，建议使用使用 csys 小工具的 test 命令，检查有哪些 API 可以在此 Linux 环境中使用。
 
-### DiskInfo
+
+
+#### DiskInfo
 
 DiskInfo 能够获取的信息不多。
 
@@ -288,8 +391,6 @@ DiskInfo 能够获取的信息不多。
 ```
 DiskInfo.GetDisks()
 ```
-
-直接反射看：
 
 ```csharp
 DriveInfo F:\
@@ -302,11 +403,11 @@ TotalSize 112718770176
 UsedSize 36220391424
 ```
 
+![9](./docs/.images/9.png)
 
 
 
-
-## Linux
+### Linux
 
 Nuget 搜索 `CZGL.SystemInfo.Linux` 安装。
 
@@ -338,7 +439,7 @@ PidInfo：一个进程的运行资源信息。
 
 
 
-### 直接使用
+#### 直接使用
 
 可以通过方法获取到相应的对象。
 
@@ -354,9 +455,8 @@ PidInfo：一个进程的运行资源信息。
 
 输出
 
-```c#
+```shell
 进程统计：
-
 Total    :    93
 Running    :    1
 Sleeping    :    59
@@ -365,7 +465,6 @@ Zombie    :    0
 
 
 CPU资源统计：
-
 UserSpace    :    1
 Sysctl    :    0.6
 NI    :    0
@@ -374,9 +473,7 @@ WaitIO    :    0.1
 HardwareIRQ    :    0
 SoftwareInterrupts    :    0
 
-
 内存统计：
-
 Total    :    1009048
 Used    :    334040
 Free    :    85408
@@ -385,7 +482,6 @@ CanUsed    :    675008
 
 
 获取虚拟内存统计：
-
 Total    :    0
 Used    :    0
 Free    :    0

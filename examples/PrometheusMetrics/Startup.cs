@@ -49,7 +49,7 @@ namespace PrometheusMetrics
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapMetrics("/metrices1");
+                endpoints.MapControllers();
                 endpoints.ProcessMetrices("/metrics");
             });
         }
