@@ -6,7 +6,7 @@ namespace CZGL.ProcessMetrics.Prometheus
 {
     public interface ILabel
     {
-        public ILabel AddLabel(string labelName,string value);
-        public ILabel AddValue(decimal value, string name = null);
+        ILabel AddLabel(string labelName, string value);
+        ILabel SetValue(decimal value, string name = null);
     }
 }

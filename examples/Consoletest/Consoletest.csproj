@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CZGL.SystemInfo\CZGL.SystemInfo.csproj" />
+    <ProjectReference Include="..\..\src\CZGL.ProcessMetrics\CZGL.ProcessMetrics.csproj" />
   </ItemGroup>
 
 </Project>

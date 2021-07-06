@@ -5,15 +5,18 @@ using System.Text;
 
 namespace CZGL.ProcessMetrics.Prometheus
 {
+    /// <summary>
+    /// 标签与值生成
+    /// </summary>
     public class LabelValue : ILabel
     {
         private readonly Dictionary<string, string> Labels;
-        protected readonly List<KeyValuePair<decimal, string>> Values;
+        protected decimal _Value = 0;
+        protected string _Name = string.Empty;
 
         public LabelValue()
         {
             Labels = new Dictionary<string, string>();
-            Values = new List<KeyValuePair<decimal, string>>();
         }
 
         public ILabel AddLabel(string labelName, string value)
@@ -22,9 +25,16 @@ namespace CZGL.ProcessMetrics.Prometheus
             return this;
         }
 
-        public ILabel AddValue(decimal value, string name = null)
+        public ILabel Inc(decimal value)
         {
-            Values.Add(new KeyValuePair<decimal, string>(value, name));
+            _Value += value;
+            return this;
+        }
+
+        public ILabel SetValue(decimal value, string name = null)
+        {
+            _Value = value;
+            this._Name = name;
             return this;
         }
 
@@ -45,19 +55,10 @@ namespace CZGL.ProcessMetrics.Prometheus
                 stringBuilder.Append("} ");
             }
 
-            var values = Values.ToArray();
-            if (values.Length != 0)
-            {
-                for (int i = 0; i < values.Length; i++)
-                {
-                    stringBuilder.Append(values[i].Key);
-                    if (values[i].Value != null)
-                        stringBuilder.Append($" @{values[i].Value}");
+            stringBuilder.Append(_Value);
+            if (!string.IsNullOrEmpty(_Name))
+                stringBuilder.Append($" @{_Name}");
 
-                    if (i < values.Length - 1)
-                        stringBuilder.Append(" ");
-                }
-            }
             return stringBuilder.ToString();
         }
     }

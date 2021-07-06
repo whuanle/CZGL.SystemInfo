@@ -20,7 +20,7 @@ CZGL.ProcessMetrics 是一个 Metrics 库，能够将程序的 GC、CPU、内存
 
 [https://www.bilibili.com/video/BV18y4y1K7Ax/](https://www.bilibili.com/video/BV18y4y1K7Ax/)
 
-教程地址：[https://github.com/whuanle/CZGL.SystemInfo/blob/primary/docs/Metrics.md](
+教程地址：[https://github.com/whuanle/CZGL.SystemInfo/blob/primary/docs/Metrics.md](https://github.com/whuanle/CZGL.SystemInfo/blob/primary/docs/Metrics.md)
 
 ![1](./docs/.images/1.png)
 
@@ -38,7 +38,38 @@ CZGL.ProcessMetrics 是一个 Metrics 库，能够将程序的 GC、CPU、内存
 
 可通过 Prometheus 采集程序信息，接着使用 Grafana 分析、显示数据。
 
-在 Nuget 中，搜索 `CZGL.ProcessMetrics` 包，然后使用中间件生成 Metrics 端点。
+CZGL.ProcessMetrics 支持 .NET Standard 2.0 和 .NET Core 3.1，但是在 .NET Standard 2.0 中，因为缺少部分 Core API，所以有部分信息是无法获取的，这部分信息如下：
+
+| 标识                         | .NET Core API               | 说明             |
+| ---------------------------- | --------------------------- | ---------------- |
+| gc_memory_info               | GC.GetGCMemoryInfo()        | 获取 GC 内存信息 |
+| total_allocated_bytes        | GC.GetTotalAllocatedBytes() | 总分配量         |
+| dotnet_lock_contention_total | Monitor.LockContentionCount | 线程池竞争数量   |
+
+
+
+CZGL.ProcessMetrics 支持 .NET Framework 、.NET Core。
+
+
+
+#### 使用方法
+
+有两种方式使用 Metrics，第一种是使用内置的 HttpListener，不需要放到 Web 中即可独立提供 URL 访问，适合 winform、wpf 或纯 控制台等应用。
+
+使用方法：
+
+```csharp
+using CZGL.ProcessMetrics;
+... ...
+MetricsServer metricsServer = new MetricsServer("http://*:1234/metrics/");
+metricsServer.Start();
+```
+
+
+
+另外一种是使用 ASP.NET Core，Metrics 作为中间件加入到 Web 应用中，此时使用的是 kestrel 。
+
+在 Nuget 中，搜索 `CZGL.ProcessMetrics.ASPNETCore` 包，然后使用中间件生成 Metrics 端点。
 
 ```csharp
             app.UseEndpoints(endpoints =>
@@ -47,6 +78,10 @@ CZGL.ProcessMetrics 是一个 Metrics 库，能够将程序的 GC、CPU、内存
                 endpoints.ProcessMetrices("/metrics");
             });
 ```
+
+
+
+但是目前无论哪种，都必须让暴露端口出去，让 Prometheus 能够访问到 API。后期会增加支持不需要暴露 API 、提供 Web 服务，即可直接推送监控信息到 Prometheus 的功能。
 
 
 

@@ -5,9 +5,11 @@ using System.Text;
 
 namespace CZGL.ProcessMetrics.Prometheus
 {
+    /// <summary>
+    ///  Prometheus 格式
+    /// </summary>
     public abstract class PrometheusFormat
     {
-
         protected readonly MetriceType _metriceType;
         protected readonly string _metricName;
         protected readonly string _describetion;
@@ -35,15 +37,16 @@ namespace CZGL.ProcessMetrics.Prometheus
         public virtual string BuildMetrice()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"# HELP {_metricName}  {_describetion} .");
-            stringBuilder.AppendLine($"# TYPE {_metricName} {Enum.GetName(typeof(MetriceType), _metriceType).ToLower()}");
+            stringBuilder.Append($"# HELP {_metricName}  {_describetion} .\n");
+            stringBuilder.Append($"# TYPE {_metricName} {Enum.GetName(typeof(MetriceType), _metriceType).ToLower()}\n");
 
             foreach (var item in labelValues)
             {
-                stringBuilder.AppendLine($"{_metricName} {item.BuildMetrice()}");
+                stringBuilder.Append($"{_metricName} {item.BuildMetrice()}\n");
             }
 
-            return stringBuilder.ToString().Replace("\r\n","\n");
+            // 各个环节中，不能出现 \r\n
+            return stringBuilder.ToString();
         }
 
 

@@ -1,18 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
-    <ApplicationIcon />
     <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon />
     <StartupObject />
     <Description>.NET Core 程序监控/度量库，能够将程序中的 GC、CPU、内存等信息记录下来，推送到 Prometheus，然后使用 Grafana 可视化显示。
 https://github.com/whuanle/CZGL.SystemInfo</Description>
-    <PackageProjectUrl>https://github.com/whuanle/CZGL.SystemInfo</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/whuanle/CZGL.SystemInfo</RepositoryUrl>
-    <Version>1.1</Version>
   </PropertyGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\CZGL.SystemInfo\CZGL.SystemInfo.csproj" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CZGL.ProcessMetrics\CZGL.ProcessMetrics.csproj" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.Tracing;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CZGL.ProcessMetrics.Counters
 {
@@ -34,21 +39,86 @@ namespace CZGL.ProcessMetrics.Counters
             });
         }
 
+
+        private static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+        private static readonly List<object> ListenerPayload = new List<object>();
+        private static DateTime lastDatetime = DateTime.Now;
+
+        // 事件源写入处，由 CLR 自动调用
         protected override void OnEventWritten(EventWrittenEventArgs eventData)
         {
-            for (int i = 0; i < eventData.Payload.Count; ++i)
+            if (eventData.Payload.Count == 0)
+                return;
+
+            // 500ms 内只能写入一次，避免数据刷入过于频繁
+            if (DateTime.Now - lastDatetime < TimeSpan.FromMilliseconds(500))
+                return;
+
+            try
             {
-                if (eventData.Payload[i] is IDictionary<string, object> eventPayload)
+                _lock.EnterUpgradeableReadLock();
+
+                try
                 {
-                    GetRelevantMetric(eventPayload);
+                    _lock.EnterWriteLock();
+
+                    ListenerPayload.Clear();
+                    foreach (var item in eventData.Payload)
+                    {
+                        ListenerPayload.Add(item);
+                    }
+                    lastDatetime = DateTime.Now;
+                }
+                catch { }
+                finally
+                {
+                    if (_lock.IsWriteLockHeld)
+                        _lock.ExitWriteLock();
                 }
             }
+            catch { }
+            finally
+            {
+                _lock.ExitUpgradeableReadLock();
+            }
         }
+
+        public static async Task BuildMetric(ProcessMetricsCore processMetricsCore)
+        {
+            if (ListenerPayload == null)
+            {
+                await Task.CompletedTask;
+                return;
+            }
+
+            try
+            {
+                _lock.EnterReadLock();
+                await Task.Factory.StartNew(() =>
+                {
+                    for (int i = 0; i < ListenerPayload.Count; ++i)
+                    {
+                        if (ListenerPayload[i] is IDictionary<string, object> eventPayload)
+                        {
+                            GetRelevantMetric(eventPayload, processMetricsCore);
+                        }
+                    }
+                });
+            }
+            catch { }
+            finally
+            {
+                if (_lock.IsWriteLockHeld)
+                    _lock.ExitWriteLock();
+            }
+        }
+
 
         // 解析其中一个值生成:
         // dotnet_xxx{label="value"} value
         private static void GetRelevantMetric(
-            IDictionary<string, object> eventPayload)
+            IDictionary<string, object> eventPayload,
+            ProcessMetricsCore processMetricsCore)
         {
             if (!eventPayload.TryGetValue("Name", out object name)) return;
             if (!eventPayload.TryGetValue("DisplayName", out object displayValue))
@@ -56,8 +126,7 @@ namespace CZGL.ProcessMetrics.Counters
                 displayValue = string.Empty;
             }
 
-            var processMetrics = ProcessMetricsCore.Instance;
-            var gauge = processMetrics
+            var gauge = processMetricsCore
                 .CreateGauge("dotnet_" + name.ToString().Replace("-", "_")
                 , displayValue.ToString());
             var labels = gauge.Create();
@@ -74,14 +143,14 @@ namespace CZGL.ProcessMetrics.Counters
                 // 获取计量单位
                 if (!eventPayload.TryGetValue("DisplayUnits", out var units))
                 {
-                    labels.AddValue(v);
+                    labels.SetValue(v);
                     return;
                 }
 
 
                 var parseValue = ParseUnits(v, units.ToString());
                 labels.AddLabel("display_units", parseValue.units);
-                labels.AddValue(parseValue.value);
+                labels.SetValue(parseValue.value);
             }
         }
 
