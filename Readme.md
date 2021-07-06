@@ -54,7 +54,7 @@ CZGL.ProcessMetrics 支持 .NET Framework 、.NET Core。
 
 #### 使用方法
 
-有两种方式使用 Metrics，第一种是使用内置的 HttpListener，不需要放到 Web 中即可独立提供 URL 访问，适合 winform、wpf 或纯 控制台等应用。
+有两种方式使用 Metrics，第一种是使用内置的 HttpListener，不需要放到 Web 中即可独立提供 URL 访问，适合 winform、wpf 或纯 控制台等应用。但是使用 HttpListener，需要使用管理员方式启动应用才能正常运行。
 
 使用方法：
 
@@ -113,6 +113,27 @@ metricsServer.Start();
 ![7](./docs/.images/7.jpg)
 
 ![8](./docs/.images/8.png)
+
+
+
+#### 自定义监控指标
+
+你也可以自定义要监控的指标数据。
+
+如果要单独输出 Prometheus 监控数据，你需要引用一个 prometheus.net 包。
+
+但是在 CZGL.ProcessMetrics 中，编写了一个简单的生成器，而无需引用 prometheus.net 包。
+
+你可以通过简单的方式添加自定义的指标数据，发布到 Prometheus 中，然后使用 Grafana 解析出来。
+
+```csharp
+var metrics = ProcessMetricsCore.Instance;
+var gauge = metrics.CreateCounter("dotnet_my_metrics","自定义的指标");
+var gaugeLabels = gauge.Create();
+gcCounterLabels
+.AddLabel("name", "test")
+.SetValue(6);
+```
 
 
 
