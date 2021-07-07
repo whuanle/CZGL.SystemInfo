@@ -66,7 +66,7 @@
   "panels": [
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": "$datasource",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -79,7 +79,7 @@
       "type": "row"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -126,7 +126,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "network_info_send{}",
+          "expr": "network_info_send{job=\"$app\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -166,7 +166,7 @@
       "type": "gauge"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -209,7 +209,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "network_info_received{}",
+          "expr": "network_info_received{job=\"$app\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -245,7 +245,7 @@
     },
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": "$datasource",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -258,7 +258,7 @@
       "type": "row"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -308,7 +308,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "network_info_send{}",
+          "expr": "network_info_send{job=\"$app\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -349,7 +349,7 @@
       "type": "stat"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -399,7 +399,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "network_info_received{}",
+          "expr": "network_info_received{job=\"$app\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -436,7 +436,7 @@
     },
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": "$datasource",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -449,7 +449,7 @@
       "type": "row"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -488,7 +488,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "drives_info{} ",
+          "expr": "drives_info{job=\"$app\"} ",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -531,7 +531,7 @@
       "type": "table"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -595,7 +595,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "drives_info{}",
+          "expr": "drives_info{job=\"$app\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -651,7 +651,7 @@
       "type": "barchart"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -697,7 +697,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "drives_info{}",
+          "expr": "drives_info{job=\"$app\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -750,7 +750,7 @@
     },
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": "$datasource",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -763,7 +763,7 @@
       "type": "row"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -843,7 +843,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "rate(process_cpu_age{}[5m])",
+          "expr": "rate(process_cpu_age{job=\"$app\"}[5m])",
           "interval": "",
           "legendFormat": "{{process_name}}",
           "refId": "A"
@@ -853,7 +853,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -911,7 +911,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "process_cpu_age",
+          "expr": "process_cpu_age{job=\"$app\"}",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -922,7 +922,7 @@
     },
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": "$datasource",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -935,7 +935,7 @@
       "type": "row"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1007,7 +1007,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "process_physical_use_memory_bytes ",
+          "expr": "process_physical_use_memory_bytes{job=\"$app\"}",
           "interval": "",
           "legendFormat": "{{process_name}}",
           "refId": "A"
@@ -1017,7 +1017,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1088,7 +1088,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "process_open_handles",
+          "expr": "process_open_handles{job=\"$app\"}",
           "interval": "",
           "legendFormat": "handles",
           "refId": "A"
@@ -1098,7 +1098,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1169,7 +1169,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "process_num_threads",
+          "expr": "process_num_threads{job=\"$app\"}",
           "interval": "",
           "legendFormat": "thread count",
           "refId": "A"
@@ -1180,7 +1180,7 @@
     },
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": "$datasource",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1193,7 +1193,7 @@
       "type": "row"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1236,7 +1236,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "rate(gc_memory_info{}[5m])",
+          "expr": "rate(gc_memory_info{job=\"$app\"}[5m])",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -1266,7 +1266,7 @@
       "type": "table"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1321,7 +1321,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "dotnet_collection_count_total",
+          "expr": "dotnet_collection_count_total{job=\"$app\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -1350,7 +1350,7 @@
       "type": "table"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "description": "Gets a count of the bytes allocated over the lifetime of the process.",
       "fieldConfig": {
         "defaults": {
@@ -1423,7 +1423,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "total_allocated_bytes{}",
+          "expr": "total_allocated_bytes{job=\"$app\"}",
           "interval": "",
           "legendFormat": "gc total allocated memory",
           "refId": "A"
@@ -1433,7 +1433,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1505,7 +1505,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "dotnet_cpu_usage{}",
+          "expr": "dotnet_cpu_usage{job=\"$app\"}",
           "interval": "",
           "legendFormat": "CPU Usage",
           "refId": "A"
@@ -1515,7 +1515,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1587,14 +1587,14 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "dotnet_gc_heap_size{}",
+          "expr": "dotnet_gc_heap_size{job=\"$app\"}",
           "interval": "",
           "legendFormat": "GC total size",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "dotnet_gen_0_size{}",
+          "expr": "dotnet_gen_0_size{job=\"$app\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "gen 0 ",
@@ -1602,7 +1602,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dotnet_gen_1_size{}",
+          "expr": "dotnet_gen_1_size{job=\"$app\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "gen 1",
@@ -1610,7 +1610,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dotnet_gen_2_size{}",
+          "expr": "dotnet_gen_2_size{job=\"$app\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "gen2",
@@ -1618,7 +1618,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dotnet_loh_size{}",
+          "expr": "dotnet_loh_size{job=\"$app\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "loh heap",
@@ -1629,7 +1629,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1703,14 +1703,14 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "dotnet_threadpool_thread_count{}",
+          "expr": "dotnet_threadpool_thread_count{job=\"$app\"}",
           "interval": "",
           "legendFormat": "threadpool thread count",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "dotnet_threadpool_queue_length{}",
+          "expr": "dotnet_threadpool_queue_length{job=\"$app\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "threadpool queue",
@@ -1718,7 +1718,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dotnet_monitor_lock_contention_count{}",
+          "expr": "dotnet_monitor_lock_contention_count{job=\"$app\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "monitor lock contention count",
@@ -1726,7 +1726,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dotnet_threadpool_completed_items_count{}",
+          "expr": "dotnet_threadpool_completed_items_count{job=\"$app\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "threadpool completed items count",
@@ -1737,7 +1737,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1809,7 +1809,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "dotnet_alloc_rate{}",
+          "expr": "dotnet_alloc_rate{job=\"$app\"}",
           "interval": "",
           "legendFormat": "alloc rate ",
           "refId": "A"
@@ -1820,7 +1820,7 @@
     },
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": "$datasource",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1833,7 +1833,7 @@
       "type": "row"
     },
     {
-      "datasource": null,
+      "datasource": "$datasource",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1904,14 +1904,14 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "dotnet_total_requests{}",
+          "expr": "dotnet_total_requests{job=\"$app\"}",
           "interval": "",
           "legendFormat": "total",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "dotnet_current_requests",
+          "expr": "dotnet_current_requests{job=\"$app\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "current",
@@ -1919,7 +1919,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dotnet_failed_requests",
+          "expr": "dotnet_failed_requests{job=\"$app\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "failed",
@@ -1935,7 +1935,55 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "",
+          "value": ""
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "DataSource",
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(job)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Application",
+        "multi": false,
+        "name": "app",
+        "options": [],
+        "query": {
+          "query": "label_values(job)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
   },
   "time": {
     "from": "now-15m",
