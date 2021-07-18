@@ -14,9 +14,17 @@ namespace CZGL.ProcessMetrics.Prometheus
         protected decimal _Value = 0;
         protected string _Name = string.Empty;
 
-        public LabelValue()
+        internal LabelValue(MetricsOption option)
         {
             Labels = new Dictionary<string, string>();
+            foreach (var item in option.Labels)
+            {
+                try
+                {
+                    Labels.Add(item.Key, item.Value);
+                }
+                catch { }
+            }
         }
 
         public ILabel AddLabel(string labelName, string value)

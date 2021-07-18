@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1;netframework4.6.1</TargetFrameworks>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
@@ -9,7 +9,7 @@
 https://github.com/whuanle/CZGL.SystemInfo</Description>
     <PackageProjectUrl>https://github.com/whuanle/CZGL.SystemInfo</PackageProjectUrl>
     <RepositoryUrl>https://github.com/whuanle/CZGL.SystemInfo</RepositoryUrl>
-    <Version>1.1</Version>
+    <Version>1.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

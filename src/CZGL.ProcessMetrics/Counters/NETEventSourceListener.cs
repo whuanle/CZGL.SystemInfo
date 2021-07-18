@@ -7,17 +7,20 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
+using System.Collections.Concurrent;
+using System.Diagnostics;
+
 namespace CZGL.ProcessMetrics.Counters
 {
     /// <summary>
     /// 监听 CLR 中的所有事件
     /// </summary>
-    sealed class EventSourceCreatedListener : EventListener
+    public sealed class NETEventSourceListener : EventListener, IMerticsSource
     {
         protected override void OnEventSourceCreated(EventSource source)
         {
             /*
-             * CLR 中包含以下监视器，但是这里只使用 System.Runtime
+             * CLR 中包含以下监视器
              * Microsoft-Windows-DotNETRuntime
              * System.Runtime
              * Microsoft-System-Net-Http
@@ -30,7 +33,9 @@ namespace CZGL.ProcessMetrics.Counters
              * Microsoft-System-Net-Security
              * System.Collections.Concurrent.ConcurrentCollectionsEventSource
              */
-            if (!source.Name.Equals("System.Runtime"))
+
+            if (MetricsOption.Listeners
+                .FirstOrDefault(x => x.Equals(source.Name, StringComparison.OrdinalIgnoreCase)) == null)
                 return;
 
             EnableEvents(source, EventLevel.Verbose, EventKeywords.All, new Dictionary<string, string>()
@@ -39,10 +44,14 @@ namespace CZGL.ProcessMetrics.Counters
             });
         }
 
+        private static readonly ConcurrentDictionary<string, IDictionary<string, object>> ListenerPayload;
 
-        private static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
-        private static readonly List<object> ListenerPayload = new List<object>();
         private static DateTime lastDatetime = DateTime.Now;
+
+        static NETEventSourceListener()
+        {
+            ListenerPayload = new ConcurrentDictionary<string, IDictionary<string, object>>();
+        }
 
         // 事件源写入处，由 CLR 自动调用
         protected override void OnEventWritten(EventWrittenEventArgs eventData)
@@ -56,34 +65,26 @@ namespace CZGL.ProcessMetrics.Counters
 
             try
             {
-                _lock.EnterUpgradeableReadLock();
-
-                try
+                foreach (var item in eventData.Payload)
                 {
-                    _lock.EnterWriteLock();
-
-                    ListenerPayload.Clear();
-                    foreach (var item in eventData.Payload)
+                    if (item == null) continue;
+                    if (item is IDictionary<string, object> eventPayload)
                     {
-                        ListenerPayload.Add(item);
+                        if (!ListenerPayload.ContainsKey(eventPayload["Name"].ToString()))
+                            _ = ListenerPayload.TryAdd(eventPayload["Name"].ToString(), null);
+                        ListenerPayload[eventPayload["Name"].ToString()] = eventPayload;
                     }
-                    lastDatetime = DateTime.Now;
+
                 }
-                catch { }
-                finally
-                {
-                    if (_lock.IsWriteLockHeld)
-                        _lock.ExitWriteLock();
-                }
+                lastDatetime = DateTime.Now;
             }
-            catch { }
-            finally
+            catch (Exception ex)
             {
-                _lock.ExitUpgradeableReadLock();
+                Debug.Fail(ex.ToString());
             }
         }
 
-        public static async Task BuildMetric(ProcessMetricsCore processMetricsCore)
+        public async Task InvokeAsync(ProcessMetricsCore metricsCore)
         {
             if (ListenerPayload == null)
             {
@@ -91,26 +92,25 @@ namespace CZGL.ProcessMetrics.Counters
                 return;
             }
 
-            try
+            TaskCompletionSource<bool> taskCompletionSource = new TaskCompletionSource<bool>();
+
+            await Task.Factory.StartNew(() =>
             {
-                _lock.EnterReadLock();
-                await Task.Factory.StartNew(() =>
+                try
                 {
-                    for (int i = 0; i < ListenerPayload.Count; ++i)
+
+                    foreach (var item in ListenerPayload.Values)
                     {
-                        if (ListenerPayload[i] is IDictionary<string, object> eventPayload)
-                        {
-                            GetRelevantMetric(eventPayload, processMetricsCore);
-                        }
+                        GetRelevantMetric(item, metricsCore);
                     }
-                });
-            }
-            catch { }
-            finally
-            {
-                if (_lock.IsWriteLockHeld)
-                    _lock.ExitWriteLock();
-            }
+                    _ = taskCompletionSource.TrySetResult(true);
+                }
+                catch
+                {
+                    _ = taskCompletionSource.TrySetResult(false);
+                }
+            });
+            await taskCompletionSource.Task;
         }
 
 
@@ -127,12 +127,13 @@ namespace CZGL.ProcessMetrics.Counters
             }
 
             var gauge = processMetricsCore
-                .CreateGauge("dotnet_" + name.ToString().Replace("-", "_")
+                .CreateGauge("dotnet_clr_" + name.ToString().Replace("-", "_")
                 , displayValue.ToString());
             var labels = gauge.Create();
 
             // 只要能够取得两者之一的值即可
-            if (eventPayload.TryGetValue("Mean", out object value) ||
+            if (
+                eventPayload.TryGetValue("Mean", out var value) ||
                 eventPayload.TryGetValue("Increment", out value))
             {
                 if (!decimal.TryParse(value.ToString(), out var v))

@@ -16,7 +16,8 @@ namespace CZGL.ProcessMetrics.Prometheus
         /// <param name="name">监控名称</param>
         /// <param name="describetion">描述值</param>
         /// <param name="value">初始化值</param>
-        public Counter(string name, string describetion, decimal value) : base(MetriceType.Counter, name, describetion)
+        internal Counter(string name, string describetion, decimal value, MetricsOption option)
+            : base(MetriceType.Counter, name, describetion, option)
         {
         }
     }

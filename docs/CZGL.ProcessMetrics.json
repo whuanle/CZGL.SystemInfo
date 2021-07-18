@@ -1,49 +1,4 @@
 {
-  "__inputs": [],
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "barchart",
-      "name": "Bar chart",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "bargauge",
-      "name": "Bar gauge",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "gauge",
-      "name": "Gauge",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.0.4"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -61,12 +16,13 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
+  "id": 7,
+  "iteration": 1626597597215,
   "links": [],
   "panels": [
     {
       "collapsed": false,
-      "datasource": "$datasource",
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -75,190 +31,11 @@
       },
       "id": 28,
       "panels": [],
-      "title": "network speed",
+      "title": "网络相关",
       "type": "row"
     },
     {
-      "datasource": "$datasource",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "kbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 1
-      },
-      "id": 24,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "/^speed_send$/",
-          "values": true
-        },
-        "showThresholdLabels": true,
-        "showThresholdMarkers": true,
-        "text": {}
-      },
-      "pluginVersion": "8.0.4",
-      "repeat": null,
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "network_info_send{job=\"$app\"}",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "send speed ↑",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "Value": true,
-              "__name__": true,
-              "instance": true,
-              "ip_address": true,
-              "job": true,
-              "mac": true,
-              "name": false,
-              "network_interface_type": true,
-              "received_size_bytes": true,
-              "send_size_bytes": true,
-              "speed_received": true,
-              "speed_send": false,
-              "status": true
-            },
-            "indexByName": {},
-            "renameByName": {
-              "name": "",
-              "speed_received": ""
-            }
-          }
-        }
-      ],
-      "type": "gauge"
-    },
-    {
-      "datasource": "$datasource",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "kbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 1
-      },
-      "id": 26,
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^speed_received$/",
-          "values": true
-        },
-        "showThresholdLabels": true,
-        "showThresholdMarkers": true,
-        "text": {}
-      },
-      "pluginVersion": "8.0.4",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "network_info_received{job=\"$app\"}",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": " received speed ↓",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "Value": true,
-              "__name__": true,
-              "instance": true,
-              "ip_address": true,
-              "job": true,
-              "mac": true,
-              "network_interface_type": true,
-              "received_size_bytes": true,
-              "send_size_bytes": true,
-              "speed_send": true,
-              "status": true
-            },
-            "indexByName": {},
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "gauge"
-    },
-    {
-      "collapsed": false,
-      "datasource": "$datasource",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 9
-      },
-      "id": 18,
-      "panels": [],
-      "title": "network",
-      "type": "row"
-    },
-    {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -283,7 +60,7 @@
         "h": 5,
         "w": 9,
         "x": 0,
-        "y": 10
+        "y": 1
       },
       "id": 20,
       "options": {
@@ -308,7 +85,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "network_info_send{job=\"$app\"}",
+          "expr": "dotnet_network_info_send{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -317,7 +94,7 @@
           "refId": "A"
         }
       ],
-      "title": "network -send",
+      "title": "已发送流量",
       "transformations": [
         {
           "id": "organize",
@@ -326,12 +103,16 @@
               "Time": true,
               "Value": true,
               "__name__": true,
+              "exported_job": true,
               "instance": true,
               "ip_address": true,
               "job": true,
               "mac": true,
+              "machine_name": true,
               "name": false,
               "network_interface_type": true,
+              "other": true,
+              "process_name": true,
               "received_size_bytes": true,
               "send_size_bytes": false,
               "speed_received": true,
@@ -340,6 +121,7 @@
             },
             "indexByName": {},
             "renameByName": {
+              "exported_job": "",
               "received_size_bytes": "",
               "send_size_bytes": ""
             }
@@ -349,7 +131,7 @@
       "type": "stat"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -377,7 +159,7 @@
         "h": 5,
         "w": 11,
         "x": 9,
-        "y": 10
+        "y": 1
       },
       "id": 22,
       "options": {
@@ -399,7 +181,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "network_info_received{job=\"$app\"}",
+          "expr": "dotnet_network_info_received{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -407,7 +189,7 @@
           "refId": "A"
         }
       ],
-      "title": "network -received",
+      "title": "已接收流量",
       "transformations": [
         {
           "id": "organize",
@@ -416,12 +198,16 @@
               "Time": true,
               "Value": true,
               "__name__": true,
+              "exported_job": true,
               "instance": true,
               "ip_address": true,
               "job": true,
               "mac": true,
+              "machine_name": true,
               "name": false,
               "network_interface_type": true,
+              "other": true,
+              "process_name": true,
               "send_size_bytes": true,
               "speed_received": true,
               "speed_send": true,
@@ -435,21 +221,309 @@
       "type": "stat"
     },
     {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 0,
+        "y": 6
+      },
+      "id": 24,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "/^speed_send$/",
+          "values": true
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "8.0.4",
+      "repeat": null,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "dotnet_network_info_send{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "上行网络速度",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "__name__": true,
+              "exported_job": true,
+              "instance": true,
+              "ip_address": true,
+              "job": true,
+              "mac": true,
+              "machine_name": true,
+              "name": false,
+              "network_interface_type": true,
+              "other": true,
+              "process_name": true,
+              "received_size_bytes": true,
+              "send_size_bytes": true,
+              "speed_received": true,
+              "speed_send": false,
+              "status": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "name": "",
+              "speed_received": ""
+            }
+          }
+        }
+      ],
+      "type": "gauge"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 11,
+        "x": 9,
+        "y": 6
+      },
+      "id": 26,
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^speed_received$/",
+          "values": true
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "8.0.4",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "dotnet_network_info_received{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "下行网络速度",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "__name__": true,
+              "exported_job": false,
+              "instance": true,
+              "ip_address": true,
+              "job": true,
+              "mac": true,
+              "machine_name": true,
+              "network_interface_type": true,
+              "other": true,
+              "process_name": true,
+              "received_size_bytes": true,
+              "send_size_bytes": true,
+              "speed_send": true,
+              "status": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "gauge"
+    },
+    {
+      "aliasColors": {
+        "buffers": "#705DA0",
+        "free": "#7EB26D"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "kbytes"
+        },
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 2,
+      "grid": {},
+      "gridPos": {
+        "h": 11,
+        "w": 20,
+        "x": 0,
+        "y": 13
+      },
+      "hiddenSeries": false,
+      "id": 60,
+      "isNew": true,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 3,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.4",
+      "pointradius": 3,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "dotnet_network_received_speed{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
+          "interval": "",
+          "legendFormat": "{{name}} - ↓",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "dotnet_network_send_speed{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{name}} - ↑",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "网络速度",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:80",
+          "format": "kbytes",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:81",
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
       "collapsed": false,
-      "datasource": "$datasource",
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 24
       },
       "id": 12,
       "panels": [],
-      "title": "Drives",
+      "title": "磁盘",
       "type": "row"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -478,7 +552,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 25
       },
       "id": 14,
       "options": {
@@ -488,7 +562,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "drives_info{job=\"$app\"} ",
+          "expr": "dotnet_drives_info{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"} ",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -496,16 +570,20 @@
           "refId": "A"
         }
       ],
-      "title": "Drives",
+      "title": "磁盘信息",
       "transformations": [
         {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Time": false,
+              "Time": true,
               "Value": true,
               "__name__": true,
-              "job": true
+              "exported_job": true,
+              "job": true,
+              "machine_name": false,
+              "other": true,
+              "process_name": true
             },
             "indexByName": {
               "Time": 9,
@@ -522,8 +600,15 @@
             },
             "renameByName": {
               "Value": "",
-              "total": "total",
-              "used_size_bytes": "used"
+              "file_system": "文件系统",
+              "file_type": "磁盘类型",
+              "free_size_bytes": "可用",
+              "instance": "来源",
+              "job": "",
+              "machine_name": "机器名称",
+              "name": "",
+              "total": "磁盘大小",
+              "used_size_bytes": "已使用"
             }
           }
         }
@@ -531,7 +616,7 @@
       "type": "table"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -571,10 +656,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 9,
+        "w": 24,
         "x": 0,
-        "y": 24
+        "y": 33
       },
       "id": 32,
       "options": {
@@ -595,7 +680,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "drives_info{job=\"$app\"}",
+          "expr": "dotnet_drives_info{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -603,7 +688,7 @@
           "refId": "A"
         }
       ],
-      "title": "drives",
+      "title": "磁盘数据",
       "transformations": [
         {
           "id": "calculateField",
@@ -631,19 +716,24 @@
               "Time": true,
               "Value": false,
               "__name__": true,
+              "exported_job": true,
               "file_system": true,
               "file_type": true,
               "free_size_bytes": true,
               "instance": true,
               "job": true,
+              "machine_name": true,
               "name": false,
+              "other": true,
+              "process_name": true,
               "used_size_bytes": true
             },
             "indexByName": {},
             "renameByName": {
               "$__cell_0": "",
               "Value": "maximum space",
-              "Value - free_size_bytes": "Used space"
+              "Value - free_size_bytes": "Used space",
+              "instance": ""
             }
           }
         }
@@ -651,7 +741,7 @@
       "type": "barchart"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -673,10 +763,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 24
+        "h": 10,
+        "w": 14,
+        "x": 0,
+        "y": 42
       },
       "id": 30,
       "options": {
@@ -697,7 +787,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "drives_info{job=\"$app\"}",
+          "expr": "dotnet_drives_info{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -705,7 +795,7 @@
           "refId": "A"
         }
       ],
-      "title": "drives used space",
+      "title": "磁盘数据",
       "transformations": [
         {
           "id": "calculateField",
@@ -733,11 +823,15 @@
               "Time": true,
               "Value - free_size_bytes": false,
               "__name__": true,
+              "exported_job": true,
               "file_system": true,
               "file_type": true,
               "free_size_bytes": true,
               "instance": true,
-              "job": true
+              "job": true,
+              "machine_name": true,
+              "other": true,
+              "process_name": true
             },
             "indexByName": {},
             "renameByName": {
@@ -750,12 +844,12 @@
     },
     {
       "collapsed": false,
-      "datasource": "$datasource",
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 52
       },
       "id": 8,
       "panels": [],
@@ -763,7 +857,7 @@
       "type": "row"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -827,7 +921,7 @@
         "h": 8,
         "w": 9,
         "x": 0,
-        "y": 33
+        "y": 53
       },
       "id": 2,
       "options": {
@@ -843,17 +937,17 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "rate(process_cpu_age{job=\"$app\"}[5m])",
+          "expr": "rate(dotnet_process_cpu_usage{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}[5m])",
           "interval": "",
           "legendFormat": "{{process_name}}",
           "refId": "A"
         }
       ],
-      "title": "process cpu age ",
+      "title": "CPU使用率",
       "type": "timeseries"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -891,7 +985,7 @@
         "h": 8,
         "w": 6,
         "x": 9,
-        "y": 33
+        "y": 53
       },
       "id": 4,
       "options": {
@@ -911,23 +1005,23 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "process_cpu_age{job=\"$app\"}",
+          "expr": "dotnet_process_cpu_usage{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "process cpu age(gauge)",
+      "title": "CPU使用率",
       "type": "gauge"
     },
     {
       "collapsed": false,
-      "datasource": "$datasource",
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 61
       },
       "id": 10,
       "panels": [],
@@ -935,7 +1029,7 @@
       "type": "row"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -946,16 +1040,23 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 12,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "dash": [
+                0,
+                10
+              ],
+              "fill": "dot"
+            },
+            "lineWidth": 2,
+            "pointSize": 6,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -974,12 +1075,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "light-red",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -991,7 +1088,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 62
       },
       "id": 6,
       "options": {
@@ -1007,17 +1104,17 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "process_physical_use_memory_bytes{job=\"$app\"}",
+          "expr": "dotnet_process_physical_used_memory_bytes{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "interval": "",
           "legendFormat": "{{process_name}}",
           "refId": "A"
         }
       ],
-      "title": "process physical memory",
+      "title": "进程已使用物理内存",
       "type": "timeseries"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1028,14 +1125,17 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 4,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "linear",
+            "lineInterpolation": "stepBefore",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -1072,7 +1172,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 50
+        "y": 70
       },
       "id": 34,
       "options": {
@@ -1088,17 +1188,293 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "process_open_handles{job=\"$app\"}",
+          "expr": "dotnet_process_open_handles_count{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "interval": "",
           "legendFormat": "handles",
           "refId": "A"
         }
       ],
-      "title": "handles count",
+      "title": "进程打开的句柄数量",
       "type": "timeseries"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepBefore",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 70
+      },
+      "id": 38,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "dotnet_process_num_threads_count{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
+          "interval": "",
+          "legendFormat": "线程数量",
+          "refId": "A"
+        }
+      ],
+      "title": "进程内的线程数",
+      "type": "timeseries"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 78
+      },
+      "hiddenSeries": false,
+      "id": 62,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.4",
+      "pointradius": 2,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "dotnet_threadpool_worker_count{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
+          "format": "time_series",
+          "interval": "",
+          "legendFormat": "可用辅助线程的数目",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "dotnet_threadpool_completion_count{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "可用异步 I/O 线程的数目",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "线程池可用数量",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:707",
+          "format": "none",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:708",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 78
+      },
+      "id": 64,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "dotnet_threadpool_count{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "线程池线程数",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "dotnet_threadpool_pendingworkitem_count{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
+          "interval": "",
+          "legendFormat": "处理队列的工作项数",
+          "refId": "B"
+        }
+      ],
+      "title": "线程池数量(.NET Core)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1152,10 +1528,10 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
-        "y": 50
+        "x": 0,
+        "y": 86
       },
-      "id": 38,
+      "id": 66,
       "options": {
         "legend": {
           "calcs": [],
@@ -1169,23 +1545,23 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "process_num_threads{job=\"$app\"}",
+          "expr": "dotnet_lock_contention_total{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "interval": "",
-          "legendFormat": "thread count",
+          "legendFormat": "线程数量",
           "refId": "A"
         }
       ],
-      "title": "thread count",
+      "title": "竞争锁的线程数量",
       "type": "timeseries"
     },
     {
       "collapsed": false,
-      "datasource": "$datasource",
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 58
+        "y": 94
       },
       "id": 42,
       "panels": [],
@@ -1193,7 +1569,7 @@
       "type": "row"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1223,10 +1599,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
+        "h": 5,
         "w": 23,
         "x": 0,
-        "y": 59
+        "y": 95
       },
       "id": 44,
       "options": {
@@ -1236,7 +1612,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "rate(gc_memory_info{job=\"$app\"}[5m])",
+          "expr": "dotnet_gc_memory_info{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -1244,7 +1620,7 @@
           "refId": "A"
         }
       ],
-      "title": "gc memory info",
+      "title": "GC 内存信息(.NET Core)",
       "transformations": [
         {
           "id": "organize",
@@ -1253,12 +1629,21 @@
               "Time": true,
               "Value": true,
               "__name__": true,
+              "exported_job": true,
               "instance": true,
-              "job": true
+              "job": true,
+              "machine_name": true,
+              "other": true,
+              "process_name": true
             },
             "indexByName": {},
             "renameByName": {
-              "fragmented_bytes": ""
+              "Time": "",
+              "fragmented_bytes": "总片段数",
+              "heap_size_bytes": "总堆大小",
+              "high_memory_load_lhreshold_bytes": "高内存负载阈值",
+              "memory_load_bytes": "内存负载",
+              "total_available_memory_bytes": "总可用内存"
             }
           }
         }
@@ -1266,7 +1651,7 @@
       "type": "table"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1307,10 +1692,10 @@
         ]
       },
       "gridPos": {
-        "h": 5,
-        "w": 9,
+        "h": 6,
+        "w": 23,
         "x": 0,
-        "y": 62
+        "y": 100
       },
       "id": 40,
       "options": {
@@ -1321,7 +1706,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "dotnet_collection_count_total{job=\"$app\"}",
+          "expr": "dotnet_collection_count_total{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -1329,20 +1714,60 @@
           "refId": "A"
         }
       ],
-      "title": "GC recovery times",
+      "title": "GC 回收次数",
       "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "平均回收次数(1小时)",
+            "binary": {
+              "left": "Value",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "run_time_hour"
+            },
+            "mode": "binary",
+            "reduce": {
+              "include": [
+                "已回收次数"
+              ],
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
         {
           "id": "organize",
           "options": {
             "excludeByName": {
               "Value": false,
               "__name__": true,
+              "exported_job": true,
               "instance": true,
-              "job": true
+              "job": true,
+              "machine_name": true,
+              "other": true,
+              "run_time_hour": true
             },
-            "indexByName": {},
+            "indexByName": {
+              "Time": 1,
+              "Value": 9,
+              "__name__": 2,
+              "generation": 3,
+              "instance": 4,
+              "job": 5,
+              "machine_name": 6,
+              "other": 7,
+              "process_name": 0,
+              "run_time_hour": 8,
+              "平均回收次数(1小时)": 10
+            },
             "renameByName": {
-              "Value": "Recovery times"
+              "Time": "更新时间",
+              "Value": "已回收次数",
+              "__name__": "",
+              "generation": "GC 代数",
+              "process_name": "进程名称"
             }
           }
         }
@@ -1350,7 +1775,7 @@
       "type": "table"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
       "description": "Gets a count of the bytes allocated over the lifetime of the process.",
       "fieldConfig": {
         "defaults": {
@@ -1404,10 +1829,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 14,
-        "x": 9,
-        "y": 62
+        "h": 6,
+        "w": 23,
+        "x": 0,
+        "y": 106
       },
       "id": 46,
       "options": {
@@ -1423,99 +1848,17 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "total_allocated_bytes{job=\"$app\"}",
+          "expr": "dotnet_total_allocated_bytes{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "interval": "",
-          "legendFormat": "gc total allocated memory",
+          "legendFormat": "内存大小",
           "refId": "A"
         }
       ],
-      "title": "gc total allocated memory",
+      "title": "GC 总分配内存",
       "type": "timeseries"
     },
     {
-      "datasource": "$datasource",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "%"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 23,
-        "x": 0,
-        "y": 67
-      },
-      "id": 48,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "dotnet_cpu_usage{job=\"$app\"}",
-          "interval": "",
-          "legendFormat": "CPU Usage",
-          "refId": "A"
-        }
-      ],
-      "title": "dotnet cpu usage ",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1571,7 +1914,7 @@
         "h": 7,
         "w": 23,
         "x": 0,
-        "y": 74
+        "y": 112
       },
       "id": 50,
       "options": {
@@ -1587,14 +1930,14 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "dotnet_gc_heap_size{job=\"$app\"}",
+          "expr": "dotnet_gc_heap_size_bytes{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "interval": "",
-          "legendFormat": "GC total size",
+          "legendFormat": "GC 堆总大小",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "dotnet_gen_0_size{job=\"$app\"}",
+          "expr": "dotnet_gen_0_size{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "gen 0 ",
@@ -1602,7 +1945,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dotnet_gen_1_size{job=\"$app\"}",
+          "expr": "dotnet_gen_1_size{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "gen 1",
@@ -1610,7 +1953,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dotnet_gen_2_size{job=\"$app\"}",
+          "expr": "dotnet_gen_2_size{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "gen2",
@@ -1618,214 +1961,24 @@
         },
         {
           "exemplar": true,
-          "expr": "dotnet_loh_size{job=\"$app\"}",
+          "expr": "dotnet_loh_size{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "loh heap",
           "refId": "E"
         }
       ],
-      "title": "GC heap",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "$datasource",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "stepBefore",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "always",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 81
-      },
-      "id": 52,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "dotnet_threadpool_thread_count{job=\"$app\"}",
-          "interval": "",
-          "legendFormat": "threadpool thread count",
-          "refId": "A"
-        },
-        {
-          "exemplar": true,
-          "expr": "dotnet_threadpool_queue_length{job=\"$app\"}",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "threadpool queue",
-          "refId": "B"
-        },
-        {
-          "exemplar": true,
-          "expr": "dotnet_monitor_lock_contention_count{job=\"$app\"}",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "monitor lock contention count",
-          "refId": "C"
-        },
-        {
-          "exemplar": true,
-          "expr": "dotnet_threadpool_completed_items_count{job=\"$app\"}",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "threadpool completed items count",
-          "refId": "D"
-        }
-      ],
-      "title": "threadpool",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "$datasource",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 81
-      },
-      "id": 54,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "dotnet_alloc_rate{job=\"$app\"}",
-          "interval": "",
-          "legendFormat": "alloc rate ",
-          "refId": "A"
-        }
-      ],
-      "title": "alloc rate ",
+      "title": "GC 堆大小",
       "type": "timeseries"
     },
     {
       "collapsed": false,
-      "datasource": "$datasource",
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 89
+        "y": 119
       },
       "id": 58,
       "panels": [],
@@ -1833,7 +1986,7 @@
       "type": "row"
     },
     {
-      "datasource": "$datasource",
+      "datasource": null,
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1888,7 +2041,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 90
+        "y": 120
       },
       "id": 56,
       "options": {
@@ -1904,14 +2057,14 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "dotnet_total_requests{job=\"$app\"}",
+          "expr": "dotnet_total_requests{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "interval": "",
           "legendFormat": "total",
           "refId": "A"
         },
         {
           "exemplar": true,
-          "expr": "dotnet_current_requests{job=\"$app\"}",
+          "expr": "dotnet_current_requests{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "current",
@@ -1919,7 +2072,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dotnet_failed_requests{job=\"$app\"}",
+          "expr": "dotnet_failed_requests{machine_name=\"$Machine\",process_name=\"$Process\",job=\"$Job\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "failed",
@@ -1937,41 +2090,75 @@
   "templating": {
     "list": [
       {
+        "allValue": null,
         "current": {
           "selected": true,
-          "text": "",
-          "value": ""
+          "text": "WHUANLE-PC",
+          "value": "WHUANLE-PC"
         },
+        "datasource": null,
+        "definition": "label_values(machine_name)",
         "description": null,
         "error": null,
-        "hide": 0,
+        "hide": 1,
         "includeAll": false,
-        "label": "DataSource",
+        "label": "Machine",
         "multi": false,
-        "name": "datasource",
+        "name": "Machine",
         "options": [],
-        "query": "prometheus",
+        "query": {
+          "query": "label_values(machine_name)",
+          "refId": "StandardVariableQuery"
+        },
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "type": "datasource"
+        "sort": 0,
+        "type": "query"
       },
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "",
-          "value": ""
+          "selected": true,
+          "text": "Consoletest",
+          "value": "Consoletest"
         },
-        "datasource": "Prometheus",
+        "datasource": null,
+        "definition": "label_values(process_name)",
+        "description": null,
+        "error": null,
+        "hide": 1,
+        "includeAll": false,
+        "label": "应用名称",
+        "multi": false,
+        "name": "Process",
+        "options": [],
+        "query": {
+          "query": "label_values(process_name)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "linux-exporter",
+          "value": "linux-exporter"
+        },
+        "datasource": null,
         "definition": "label_values(job)",
         "description": null,
         "error": null,
-        "hide": 0,
+        "hide": 1,
         "includeAll": false,
-        "label": "Application",
+        "label": "Job",
         "multi": false,
-        "name": "app",
+        "name": "Job",
         "options": [],
         "query": {
           "query": "label_values(job)",
@@ -1986,7 +2173,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -2004,7 +2191,7 @@
     ]
   },
   "timezone": "",
-  "title": "CZGL.ProcessMetrics",
-  "uid": "U5OwkQz7z",
-  "version": 130
+  "title": "New ProcessMetrics",
+  "uid": "P8Mc03mnz",
+  "version": 99
 }

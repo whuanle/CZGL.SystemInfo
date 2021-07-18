@@ -20,7 +20,11 @@ namespace CZGL.SystemInfo
 
         private NetworkInfo(NetworkInterface network)
         {
+            if (network == null)
+                throw new ArgumentNullException(nameof(NetworkInterface));
+
             _instance = network;
+
             speed = new InternetSpeed();
             _Statistics = new Lazy<IPInterfaceStatistics>(() => _instance.GetIPStatistics());
             _Ipv4Statistics = new Lazy<IPv4InterfaceStatistics>(() => _instance.GetIPv4Statistics());

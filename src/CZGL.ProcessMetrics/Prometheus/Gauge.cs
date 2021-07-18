@@ -9,7 +9,8 @@ namespace CZGL.ProcessMetrics.Prometheus
     /// </summary>
     public class Gauge : PrometheusFormat
     {
-        public Gauge(string name, string describetion) : base(MetriceType.Gauge, name, describetion)
+        internal Gauge(string name, string describetion, MetricsOption option)
+            : base(MetriceType.Gauge, name, describetion, option)
         {
         }
     }

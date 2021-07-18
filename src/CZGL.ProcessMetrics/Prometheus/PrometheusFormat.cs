@@ -15,21 +15,24 @@ namespace CZGL.ProcessMetrics.Prometheus
         protected readonly string _describetion;
 
         protected readonly List<LabelValue> labelValues;
+        private readonly MetricsOption _option;
 
         public string MetriceName => _metricName;
         public string Describetion => _describetion;
 
 
-        protected PrometheusFormat(MetriceType metriceType, string metricName, string describetion)
+
+        protected PrometheusFormat(MetriceType metriceType, string metricName, string describetion, MetricsOption option)
         {
             (_metriceType, _metricName, _describetion) = (metriceType, metricName.ToLower(), describetion);
+            _option = option;
             labelValues = new List<LabelValue>();
         }
 
 
         public ILabel Create()
         {
-            var label = new LabelValue();
+            var label = new LabelValue(_option);
             labelValues.Add(label);
             return label;
         }

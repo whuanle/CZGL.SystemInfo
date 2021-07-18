@@ -14,7 +14,7 @@ Windows 可以使用 System.Diagnostics.PerformanceCounter 、System.Management.
 
 ### 预览
 
-CZGL.ProcessMetrics 是一个 Metrics 库，能够将程序的 GC、CPU、内存、机器网络、磁盘空间等信息记录下来，使用 Prometheus 采集信息，然后使用 Grafana 显示。
+CZGL.ProcessMetrics 是一个 Metrics 库，能够将程序的 GC、CPU、内存、机器网络、磁盘空间等信息记录下来，使用 Prometheus 采集信息，然后使用 Grafana 显示。支持 .NET Core 和 .NET Framework 应用，例如 Wpf、Winfrom 应用等。
 
 视频地址：
 
