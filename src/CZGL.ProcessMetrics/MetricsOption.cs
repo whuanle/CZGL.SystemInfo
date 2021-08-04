@@ -16,7 +16,7 @@ namespace CZGL.ProcessMetrics
             var process = ProcessInfo.GetCurrentProcess();
             _Labels = new Dictionary<string, string>();
             _Labels.Add("machine_name", SystemPlatformInfo.MachineName);
-            _Labels.Add("process_name", process.ProcessName);
+            _Labels.Add("process_name", AppDomain.CurrentDomain.FriendlyName);
 
             _ListenerNames = new List<string>();
             Listeners = _ListenerNames;
