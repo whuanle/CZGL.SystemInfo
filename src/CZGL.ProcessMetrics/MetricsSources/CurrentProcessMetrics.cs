@@ -113,7 +113,7 @@ namespace CZGL.ProcessMetrics.MetricsSources
                 var labels = processMemory.Create()
                     .AddLabel("id", processInfo.ProcessId.ToString())
                     .AddLabel("name", processInfo.ProcessName)
-                    .AddLabel("start_time", processInfo.StartTime.ToString())
+                    .AddLabel("start_time", processInfo.StartTime.ToString("yyyy/MM/dd HH:mm:ss"))
                     .AddLabel("tick_run_time_ms", Environment.TickCount.ToString())
                     .AddLabel("physical_used_memory_bytes", processInfo.PhysicalUsedMemory.ToString());
                 try
