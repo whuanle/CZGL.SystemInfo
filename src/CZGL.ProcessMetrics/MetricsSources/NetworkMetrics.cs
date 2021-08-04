@@ -37,7 +37,7 @@ namespace CZGL.ProcessMetrics.MetricsSources
 
                     var speed = item.GetInternetSpeed();
                     networksSendLabel.AddLabel("name", item.Name)
-                        .AddLabel("ip_address", item.AddressIpv4.ToString())
+                        .AddLabel("ip_address", item.AddressIpv4?.ToString())
                         .AddLabel("mac", item.Mac)
                         .AddLabel("status", item.Status.ToString())
                         .AddLabel("network_interface_type", item.NetworkType.ToString())
@@ -46,7 +46,7 @@ namespace CZGL.ProcessMetrics.MetricsSources
                         .SetValue((speed.Sent.OriginSize >> 10));
 
                     networksreceivedLabel.AddLabel("name", item.Name)
-                        .AddLabel("ip_address", item.AddressIpv4.ToString())
+                        .AddLabel("ip_address", item.AddressIpv4?.ToString())
                         .AddLabel("mac", item.Mac)
                         .AddLabel("status", item.Status.ToString())
                         .AddLabel("network_interface_type", item.NetworkType.ToString())
@@ -55,13 +55,13 @@ namespace CZGL.ProcessMetrics.MetricsSources
                         .SetValue((speed.Received.OriginSize >> 10));
 
                     networksSendLabel_.AddLabel("name", item.Name)
-                        .AddLabel("ip_address", item.AddressIpv4.ToString())
+                        .AddLabel("ip_address", item.AddressIpv4?.ToString())
                         .AddLabel("mac", item.Mac)
                         .AddLabel("network_interface_type", item.NetworkType.ToString())
                         .SetValue((speed.Sent.OriginSize >> 10));
 
                     networksreceivedLabel_.AddLabel("name", item.Name)
-                        .AddLabel("ip_address", item.AddressIpv4.ToString())
+                        .AddLabel("ip_address", item.AddressIpv4?.ToString())
                         .AddLabel("mac", item.Mac)
                         .AddLabel("network_interface_type", item.NetworkType.ToString())
                         .SetValue((speed.Received.OriginSize >> 10));

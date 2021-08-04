@@ -29,9 +29,9 @@ namespace CZGL.SystemInfo
             _Statistics = new Lazy<IPInterfaceStatistics>(() => _instance.GetIPStatistics());
             _Ipv4Statistics = new Lazy<IPv4InterfaceStatistics>(() => _instance.GetIPv4Statistics());
             _AddressIpv6 = new Lazy<IPAddress>(() => _instance.GetIPProperties().UnicastAddresses
-             .FirstOrDefault(x => x.IPv4Mask.ToString().Equals("0.0.0.0")).Address);
+            .FirstOrDefault(x => x.IPv4Mask.ToString().Equals("0.0.0.0"))?.Address);
             _AddressIpv4 = new Lazy<IPAddress>(() => _instance.GetIPProperties().UnicastAddresses
-            .FirstOrDefault(x => !x.IPv4Mask.ToString().Equals("0.0.0.0")).Address);
+            .FirstOrDefault(x => !x.IPv4Mask.ToString().Equals("0.0.0.0"))?.Address);
         }
 
         #region 接口信息
@@ -277,7 +277,9 @@ namespace CZGL.SystemInfo
             return
                 NetworkInterface.GetAllNetworkInterfaces()
                 .Where(x => x.OperationalStatus == OperationalStatus.Up
-                && x.NetworkInterfaceType != NetworkInterfaceType.Loopback).Select(x => new NetworkInfo(x))
+                                            && x.NetworkInterfaceType != NetworkInterfaceType.Loopback
+                                            && x.GetIPProperties().UnicastAddresses.Any(i=> !i.IPv4Mask.ToString().Equals("0.0.0.0")))
+                .Select(x => new NetworkInfo(x))
                 .ToArray();
         }
 
