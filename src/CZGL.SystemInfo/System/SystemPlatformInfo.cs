@@ -7,8 +7,6 @@ using System.Net.NetworkInformation;
 namespace CZGL.SystemInfo
 {
     /// <summary>
-    /// Provides information about .NET Runtime installation, program system information, and more
-    /// <br />
     /// 提供有关 .NET 运行时安装的信息、程序系统信息等。
     /// </summary>
     public static class SystemPlatformInfo
@@ -42,8 +40,7 @@ namespace CZGL.SystemInfo
         public static string OSArchitecture => RuntimeInformation.OSArchitecture.ToString();
 
         /// <summary>
-        /// Gets an <see cref="PlatformID"/> identifier<br />
-        /// 获取操作系统的类型
+        /// 获取操作系统的类型 <see cref="PlatformID"/>
         /// <para>
         /// ex:<br />
         /// Win32S、Win32Windows、Win32NT、WinCE、Unix、Xbox、MacOSX
@@ -52,7 +49,6 @@ namespace CZGL.SystemInfo
         public static string OSPlatformID => Environment.OSVersion.Platform.ToString();
 
         /// <summary>
-        /// Operating system kernel version<br />
         /// 操作系统内核版本
         /// <para>
         /// ex:<br />
@@ -86,38 +82,33 @@ namespace CZGL.SystemInfo
         public static string ProcessArchitecture => RuntimeInformation.ProcessArchitecture.ToString();
 
         /// <summary>
-        /// Gets the number of processors on the current machine.<br />
         /// 当前计算机上的处理器数
         /// </summary>
+        /// <remarks>如 4核心8线程的 CPU，这里会获取到 8</remarks>
         public static int ProcessorCount => Environment.ProcessorCount;
 
         /// <summary>
-        /// Gets the NetBIOS name of this local computer <br />
         /// 计算机名称
         /// </summary>
         public static string MachineName => Environment.MachineName;
 
         /// <summary>
-        /// Gets the user name of the person who is currently logged on to the Windows/Linux operating<br />
         /// 当前登录到此系统的用户名称
         /// </summary>
         public static string UserName => Environment.UserName;
 
         /// <summary>
-        /// Gets the network domain name associated with the current user.<br />
-        /// 用户网络域名称
+        /// 用户网络域名称，即 hostname
         /// </summary>
         public static string UserDomainName => Environment.UserDomainName;
 
 
         /// <summary>
-        /// Gets a value indicating whether the current process is running in user interactive mode
         /// 是否在交互模式中运行
         /// </summary>
         public static bool IsUserInteractive => Environment.UserInteractive;
 
         /// <summary>
-        /// Returns an array of string containing the names of the logical drives on the current computer<br />
         /// 系统的磁盘和分区列表
         /// <para>
         /// ex:<br />
@@ -128,7 +119,6 @@ namespace CZGL.SystemInfo
         public static string[] GetLogicalDrives => Environment.GetLogicalDrives();
 
         /// <summary>
-        /// Gets the fully qualified path of the system directory.<b>Linux has no system directory</b><br />
         /// 系统根目录完全路径。<b>Linux 没有系统根目录</b>
         /// <para>
         /// ex:<br />
@@ -139,9 +129,10 @@ namespace CZGL.SystemInfo
         public static string SystemDirectory => Environment.SystemDirectory;
 
         /// <summary>
-        /// Gets the number of bytes in the operating system's memory page.<br />
         /// 操作系统内存页一页的字节数
         /// </summary>
         public static int MemoryPageSize => Environment.SystemPageSize;
+
+
     }
 }

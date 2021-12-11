@@ -1,27 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Version>1.0.4</Version>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageLicenseFile>Apache-2.0.txt</PackageLicenseFile>
+		<RepositoryUrl>https://github.com/whuanle/CZGL.SystemInfo</RepositoryUrl>
+		<Description>CZGL.SystemInfo 是一个支持 Windows 和 Linux 等平台的能够获取机器硬件信息、采集机器资源信息、监控进程资源的库。</Description>
+		<Copyright>痴者工良</Copyright>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.0.3</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageLicenseFile>Apache-2.0.txt</PackageLicenseFile>
-    <RepositoryUrl>https://github.com/whuanle/CZGL.SystemInfo</RepositoryUrl>
-    <Description>CZGL.SystemInfo 是一个支持 Windows 和 Linux 等平台的能够获取机器硬件信息、采集机器资源信息、监控进程资源的库。</Description>
-    <Copyright>痴者工良</Copyright>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\publish\netstandard2.0\CZGL.SystemInfo.xml</DocumentationFile>
-    <OutputPath>bin\Release\netstandard2.0\publish\netstandard2.0\</OutputPath>
-    <WarningLevel>0</WarningLevel>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\..\Apache-2.0.txt">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\Apache-2.0.txt">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>

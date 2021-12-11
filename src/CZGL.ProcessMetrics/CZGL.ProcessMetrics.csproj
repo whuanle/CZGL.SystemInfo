@@ -1,18 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.1;netframework4.6.1</TargetFrameworks>
-    <ApplicationIcon />
-    <OutputType>Library</OutputType>
-    <StartupObject />
-    <Description>.NET Core 程序监控/度量库，能够将程序中的 GC、CPU、内存等信息记录下来，推送到 Prometheus，然后使用 Grafana 可视化显示。
-https://github.com/whuanle/CZGL.SystemInfo</Description>
-    <PackageProjectUrl>https://github.com/whuanle/CZGL.SystemInfo</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/whuanle/CZGL.SystemInfo</RepositoryUrl>
-    <Version>1.2</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0</TargetFrameworks>
+		<ApplicationIcon />
+		<OutputType>Library</OutputType>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<StartupObject />
+		<Description>
+			.NET Core 程序监控/度量库，能够将程序中的 GC、CPU、内存等信息记录下来，推送到 Prometheus，然后使用 Grafana 可视化显示。
+			https://github.com/whuanle/CZGL.SystemInfo
+		</Description>
+		<PackageProjectUrl>https://github.com/whuanle/CZGL.SystemInfo</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/whuanle/CZGL.SystemInfo</RepositoryUrl>
+		<Version>1.2</Version>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CZGL.SystemInfo\CZGL.SystemInfo.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CZGL.SystemInfo\CZGL.SystemInfo.csproj" />
+	</ItemGroup>
 </Project>

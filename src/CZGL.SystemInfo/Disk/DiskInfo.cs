@@ -12,6 +12,11 @@ namespace CZGL.SystemInfo
     public class DiskInfo
     {
         private readonly DriveInfo _info;
+
+
+        /// <summary>
+        /// 获取磁盘类
+        /// </summary>
         public DriveInfo DriveInfo => _info;
 
         private DiskInfo(DriveInfo info)
@@ -20,55 +25,57 @@ namespace CZGL.SystemInfo
         }
 
         /// <summary>
-        /// Drive Id<br />
         /// 驱动器名称
         /// <para>ex: C:\</para>
         /// </summary>
         public string Id => _info.Name;
 
         /// <summary>
-        /// Drive Name,Volume label
         /// 磁盘名称
         /// <para>ex:<br />
-        /// Windows:system<br />
+        /// Windows:    system<br />
         /// Linux:  /dev
         /// </para>
         /// </summary>
         public string Name => _info.Name;
 
         /// <summary>
-        /// Gets the drive type<br />
         /// 获取驱动器类型
         /// </summary>
         /// <remarks>获取驱动器类型，如 CD-ROM、可移动、网络或固定</remarks>
         public DriveType DriveType => _info.DriveType;
 
         /// <summary>
-        ///  File system<br />
         ///  文件系统
         ///  <para>
-        ///  Windows:NTFS、 CDFS...
+        ///  Windows:   NTFS、 CDFS...<br />
         ///  Linux:  rootfs、tmpfs、binfmt_misc...
         ///  </para>
         /// </summary>
         public string FileSystem => _info.DriveFormat;
 
         /// <summary>
-        /// Indicates the amount of available free space on a drive, in bytes<br />
-        /// 可用空闲空间总量（以字节为单位）
+        /// 磁盘剩余容量（以字节为单位）
         /// </summary>
         public long FreeSpace => _info.AvailableFreeSpace;
 
         /// <summary>
-        /// Gets the total size of storage space on a drive, in bytes<br />
-        /// 总空间大小
+        /// 磁盘总容量（以字节为单位）
         /// </summary>
         public long TotalSize => _info.TotalSize;
 
+        /// <summary>
+        /// 磁盘剩余可用容量
+        /// </summary>
         public long UsedSize => TotalSize - FreeSpace;
 
         /// <summary>
-        /// 获取本地磁盘信息
+        /// 磁盘根目录位置
+        /// </summary>
+        public string? RootPath => _info.RootDirectory.FullName;
+
+        /// <summary>
+        /// 获取本地所有磁盘信息
         /// </summary>
         /// <returns></returns>
         public static DiskInfo[] GetDisks()
@@ -77,10 +84,11 @@ namespace CZGL.SystemInfo
         }
 
         /// <summary>
-        /// 获取 Docker 运行的容器，其容器文件系统在主机中的存储位置
+        /// 获取 Docker 运行的容器其容器文件系统在主机中的存储位置
         /// </summary>
+        /// <remarks>程序需要在宿主机运行才有效果，在容器中运行，调用此API获取不到相关信息</remarks>
         /// <returns></returns>
-        public static DiskInfo[] GetContainerMerge()
+        public static DiskInfo[] GetDockerMerge()
         {
             return DriveInfo.GetDrives()
                  .Where(x => x.DriveFormat.Equals("overlay", StringComparison.OrdinalIgnoreCase) && x.DriveFormat.Contains("docker"))
@@ -89,14 +97,14 @@ namespace CZGL.SystemInfo
 
 
         /// <summary>
-        /// 筛选出能够使用的真正的磁盘
+        /// 筛选出真正能够使用的磁盘
         /// </summary>
         /// <returns></returns>
         public static DiskInfo[] GetRealDisk()
         {
             var disks = DriveInfo.GetDrives()
             .Where(x =>
-            x.DriveType == System.IO.DriveType.Fixed &&
+            x.DriveType == DriveType.Fixed &&
             x.TotalSize != 0 && x.DriveFormat != "overlay");
 
             return disks.Select(x => new DiskInfo(x))
@@ -108,9 +116,9 @@ namespace CZGL.SystemInfo
         /// </summary>
         private class DiskInfoEquality : IEqualityComparer<DiskInfo>
         {
-            public bool Equals(DiskInfo x, DiskInfo y)
+            public bool Equals(DiskInfo? x, DiskInfo? y)
             {
-                return x.Id == y.Id;
+                return x?.Id == y?.Id;
             }
 
             public int GetHashCode(DiskInfo obj)

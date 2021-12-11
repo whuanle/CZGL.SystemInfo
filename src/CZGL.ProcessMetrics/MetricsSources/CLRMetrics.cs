@@ -1,15 +1,13 @@
-﻿#if NETCOREAPP3_0 || NETCOREAPP3_1
-
-using CZGL.ProcessMetrics.Prometheus;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using CZGL.ProcessMetrics.Prometheus;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CZGL.ProcessMetrics.MetricsSources
 {
+    /// <summary>
+    /// 监控 CLR
+    /// </summary>
     public class CLRMetrics : IMerticsSource
     {
         public async Task InvokeAsync(ProcessMetricsCore metricsCore)
@@ -24,4 +22,3 @@ namespace CZGL.ProcessMetrics.MetricsSources
         }
     }
 }
-#endif

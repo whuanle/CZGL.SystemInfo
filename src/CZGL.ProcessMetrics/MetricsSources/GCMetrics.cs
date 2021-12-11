@@ -1,6 +1,7 @@
 ﻿using CZGL.SystemInfo;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace CZGL.ProcessMetrics.MetricsSources
             await Task.Factory.StartNew(() =>
             {
                 var collectionCountsParent = metricsCore.CreateCounter("dotnet_collection_count_total", "the number of times garbage collection has occurred for the specified generation of objects.", 0);
-                var hour = Math.Round((decimal)(DateTime.Now - ProcessInfo.GetCurrentProcess().StartTime).TotalHours, 1);
+                var hour = Math.Round((decimal)(DateTime.Now - Process.GetCurrentProcess().StartTime).TotalHours, 1);
 
                 for (var gen = 0; gen <= GC.MaxGeneration; gen++)
                 {
@@ -28,7 +29,7 @@ namespace CZGL.ProcessMetrics.MetricsSources
                         .SetValue(recycleCount);
                 }
 
-#if NETCOREAPP3_0 || NETCOREAPP3_1
+
                 var gcMemoryGauge = metricsCore.CreateGauge("dotnet_gc_memory_info", "Gets garbage collection memory information");
                 var gcMemoryInfo = GC.GetGCMemoryInfo();
                 gcMemoryGauge.Create()
@@ -63,7 +64,6 @@ namespace CZGL.ProcessMetrics.MetricsSources
                 var totalAllocatedBytesGauge = metricsCore.CreateGauge("dotnet_total_allocated_bytes", "Gets a count of the bytes allocated over the lifetime of the process.");
                 var totalAllocatedLabels = totalAllocatedBytesGauge.Create();
                 totalAllocatedLabels.SetValue(GC.GetTotalAllocatedBytes());
-#endif
             });
         }
 
