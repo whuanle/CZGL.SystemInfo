@@ -35,7 +35,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp", "examples
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleMetrices", "examples\ConsoleMetrices\ConsoleMetrices.csproj", "{B4592368-45C1-4429-8CC9-46A794A043CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppInfo", "examples\ConsoleAppInfo\ConsoleAppInfo.csproj", "{A6F5AECC-9D24-41FC-91F0-51DC07C15333}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppInfo", "examples\ConsoleAppInfo\ConsoleAppInfo.csproj", "{A6F5AECC-9D24-41FC-91F0-51DC07C15333}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CZGL.SystemInfo.Test", "tests\CZGL.SystemInfo.Test\CZGL.SystemInfo.Test.csproj", "{08DC3C1C-5D43-436E-9273-B9FFB82BD44C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +101,10 @@ Global
 		{A6F5AECC-9D24-41FC-91F0-51DC07C15333}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6F5AECC-9D24-41FC-91F0-51DC07C15333}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6F5AECC-9D24-41FC-91F0-51DC07C15333}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08DC3C1C-5D43-436E-9273-B9FFB82BD44C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08DC3C1C-5D43-436E-9273-B9FFB82BD44C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08DC3C1C-5D43-436E-9273-B9FFB82BD44C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08DC3C1C-5D43-436E-9273-B9FFB82BD44C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,6 +124,7 @@ Global
 		{E70B9C94-A2C7-46BF-BF81-1F3153D0D4F5} = {94A57FD9-ADAF-4911-B9AE-1DA7E318881A}
 		{B4592368-45C1-4429-8CC9-46A794A043CC} = {94A57FD9-ADAF-4911-B9AE-1DA7E318881A}
 		{A6F5AECC-9D24-41FC-91F0-51DC07C15333} = {94A57FD9-ADAF-4911-B9AE-1DA7E318881A}
+		{08DC3C1C-5D43-436E-9273-B9FFB82BD44C} = {5EF8FC14-BB0A-4374-A921-A4DC45165B6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9A4463D9-715F-4622-8FA1-C9E14BEFF831}

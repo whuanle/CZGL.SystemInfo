@@ -2,13 +2,9 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using CZGL.SystemInfo.Memory;
-using CZGL.SystemInfo.Memory.Linux;
-using CZGL.SystemInfo.Memory.Windows;
 using Microsoft.Win32;
 namespace CZGL.SystemInfo
 {
-
-
     /// <summary>
     /// 获取内存信息
     /// </summary>

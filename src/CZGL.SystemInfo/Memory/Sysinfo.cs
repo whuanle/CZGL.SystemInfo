@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CZGL.SystemInfo.Memory.Linux
+namespace CZGL.SystemInfo.Memory
 {
     internal struct Sysinfo
     {
@@ -20,7 +20,7 @@ namespace CZGL.SystemInfo.Memory.Linux
         /// <summary>
         /// 总物理内存
         /// </summary>
-        public ulong totalram; 
+        public ulong totalram;
 
         /// <summary>
         /// 可用内存
@@ -30,7 +30,7 @@ namespace CZGL.SystemInfo.Memory.Linux
         /// <summary>
         /// 共享内存
         /// </summary>
-        public ulong sharedram; 
+        public ulong sharedram;
         public ulong bufferram; /* Memory used by buffers */
         public ulong totalswap; /* Total swap space size */
         public ulong freeswap;  /* swap space still available */

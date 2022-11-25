@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CZGL.SystemInfo.Cpu
+namespace CZGL.SystemInfo.CPU
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct FILETIME
