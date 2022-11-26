@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace CZGL.SystemInfo.Memory
 {
-    internal struct Sysinfo
+    public struct Sysinfo
     {
-        public long uptime;             /* Seconds since boot */
+        /// <summary>
+        /// Seconds since boot
+        /// </summary>
+        public long uptime;
 
         /// <summary>
         /// 获取 1，5，15 分钟内存的平均使用量，数组大小为 3
@@ -31,14 +34,46 @@ namespace CZGL.SystemInfo.Memory
         /// 共享内存
         /// </summary>
         public ulong sharedram;
-        public ulong bufferram; /* Memory used by buffers */
-        public ulong totalswap; /* Total swap space size */
-        public ulong freeswap;  /* swap space still available */
-        public ushort procs;    /* Number of current processes */
-        public ulong totalhigh; /* Total high memory size */
-        public ulong freehigh;  /* Available high memory size */
-        public uint mem_unit;   /* Memory unit size in bytes */
+
+        /// <summary>
+        /// Memory used by buffers
+        /// </summary>
+        public ulong bufferram;
+
+        /// <summary>
+        /// Total swap space size
+        /// </summary>
+        public ulong totalswap;
+
+        /// <summary>
+        /// swap space still available
+        /// </summary>
+        public ulong freeswap;
+
+        /// <summary>
+        /// Number of current processes
+        /// </summary>
+        public ushort procs;
+
+        /// <summary>
+        /// Total high memory size 
+        /// </summary>
+        public ulong totalhigh;
+
+        /// <summary>
+        /// Available high memory size 
+        /// </summary>
+        public ulong freehigh;
+
+        /// <summary>
+        /// Memory unit size in bytes
+        /// </summary>
+        public uint mem_unit;
+
+        /// <summary>
+        /// Padding to 64 bytes
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-        public byte[] _f; /* Padding to 64 bytes */
+        public byte[] _f;
     }
 }

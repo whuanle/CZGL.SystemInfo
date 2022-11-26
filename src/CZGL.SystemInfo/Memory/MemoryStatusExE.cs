@@ -62,7 +62,7 @@ namespace CZGL.SystemInfo.Memory
         /// </summary>
         internal ulong ullAvailExtendedVirtual;
 
-        internal void Refresh()
+        internal void Init()
         {
             dwLength = checked((uint)Marshal.SizeOf(typeof(MemoryStatusExE)));
         }

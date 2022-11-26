@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Version>2.0</Version>
+		<LangVersion>8.0</LangVersion>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageLicenseFile>Apache-2.0.txt</PackageLicenseFile>
 		<RepositoryUrl>https://github.com/whuanle/CZGL.SystemInfo</RepositoryUrl>
