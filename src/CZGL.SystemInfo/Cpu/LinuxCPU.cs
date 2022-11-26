@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace CZGL.SystemInfo.CPU
+namespace CZGL.SystemInfo
 {
 
     /// <summary>

@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CZGL.SystemInfo.Memory
+﻿namespace CZGL.SystemInfo
 {
-    internal struct MEMORYSTATUS
+    /// <summary>
+    /// 
+    /// </summary>
+    public struct MEMORYSTATUS
     {
-        internal uint dwLength;
-        internal uint dwMemoryLoad;
-        internal uint dwTotalPhys;
-        internal uint dwAvailPhys;
-        internal uint dwTotalPageFile;
-        internal uint dwAvailPageFile;
-        internal uint dwTotalVirtual;
-        internal uint dwAvailVirtual;
+        public uint dwLength;
+        public uint dwMemoryLoad;
+        public uint dwTotalPhys;
+        public uint dwAvailPhys;
+        public uint dwTotalPageFile;
+        public uint dwAvailPageFile;
+        public uint dwTotalVirtual;
+        public uint dwAvailVirtual;
     }
 }

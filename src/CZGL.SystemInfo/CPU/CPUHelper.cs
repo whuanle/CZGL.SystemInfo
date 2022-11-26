@@ -1,7 +1,6 @@
-﻿using CZGL.SystemInfo.CPU.Windows;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace CZGL.SystemInfo.CPU
+namespace CZGL.SystemInfo
 {
     /// <summary>
     /// 

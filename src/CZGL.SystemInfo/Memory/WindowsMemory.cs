@@ -1,6 +1,6 @@
-﻿using System;
+﻿using CZGL.SystemInfo.Memory;
+using System;
 using System.Runtime.InteropServices;
-using CZGL.SystemInfo.Memory;
 
 namespace CZGL.SystemInfo
 {
@@ -18,7 +18,7 @@ namespace CZGL.SystemInfo
         /// <remarks>Windows XP [仅限桌面应用程序];最低支持服务器 Windows Server 2003 [仅限桌面应用程序]</remarks>
         /// <param name="lpBuffer"></param>
         [LibraryImport("Kernel32.dll", SetLastError = true)]
-        internal static partial void GlobalMemoryStatus(ref MEMORYSTATUS lpBuffer);
+        public static partial void GlobalMemoryStatus(ref MEMORYSTATUS lpBuffer);
 
         /// <summary>
         /// 检索有关系统当前使用物理和虚拟内存的信息
@@ -28,7 +28,7 @@ namespace CZGL.SystemInfo
         /// <returns></returns>
         [LibraryImport("Kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        internal static partial Boolean GlobalMemoryStatusEx(ref MemoryStatusExE lpBuffer);
+        public static partial Boolean GlobalMemoryStatusEx(ref MemoryStatusExE lpBuffer);
 
 #else
 
@@ -39,7 +39,7 @@ namespace CZGL.SystemInfo
         /// <remarks>Windows XP [仅限桌面应用程序];最低支持服务器 Windows Server 2003 [仅限桌面应用程序]</remarks>
         /// <param name="lpBuffer"></param>
         [DllImport("Kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        internal static extern void GlobalMemoryStatus(ref MEMORYSTATUS lpBuffer);
+        public static extern void GlobalMemoryStatus(ref MEMORYSTATUS lpBuffer);
 
         /// <summary>
         /// 检索有关系统当前使用物理和虚拟内存的信息
@@ -49,7 +49,7 @@ namespace CZGL.SystemInfo
         /// <returns></returns>
         [DllImport("Kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern Boolean GlobalMemoryStatusEx(ref MemoryStatusExE lpBuffer);
+        public static extern Boolean GlobalMemoryStatusEx(ref MemoryStatusExE lpBuffer);
 #endif
         /// <summary>
         /// 

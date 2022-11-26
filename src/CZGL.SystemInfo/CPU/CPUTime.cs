@@ -1,4 +1,4 @@
-﻿namespace CZGL.SystemInfo.CPU
+﻿namespace CZGL.SystemInfo
 {
     /// <summary>
     /// 

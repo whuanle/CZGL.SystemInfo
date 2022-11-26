@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace CZGL.SystemInfo.CPU
+namespace CZGL.SystemInfo
 {
     /// <summary>
     /// Windows
@@ -58,7 +58,10 @@ namespace CZGL.SystemInfo.CPU
         /// <returns></returns>
         public static CPUTime GetCPUTime()
         {
-            if (!GetSystemTimes(out FILETIME lpIdleTime, out FILETIME lpKernelTime, out FILETIME lpUserTime))
+            FILETIME lpIdleTime = default;
+            FILETIME lpKernelTime = default;
+            FILETIME lpUserTime = default;
+            if (!GetSystemTimes(out lpIdleTime, out lpKernelTime, out lpUserTime))
             {
                 return default;
             }
