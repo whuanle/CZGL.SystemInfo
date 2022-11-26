@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using CZGL.SystemInfo.Memory;
 
@@ -83,61 +82,5 @@ namespace CZGL.SystemInfo
                 TotalVirtualMemory,
                 AvailableVirtualMemory);
         }
-    }
-
-
-        public partial class LinuxMemory
-        {
-            private Sysinfo _sysinfo;
-
-            /// <summary>
-            /// <inheritdoc/>
-            /// </summary>
-            /// <returns></returns>
-            public MemoryValue GetValue()
-            {
-                MemoryValue value = new MemoryValue();
-                Refresh(value);
-                return value;
-            }
-
-            public void Refresh(MemoryValue value)
-            {
-                var result = sysinfo(ref _sysinfo);
-                if (result != 0) throw new PlatformNotSupportedException("无法获得内存信息");
-                value.TotalPhysicalMemory = _sysinfo.totalram;
-                value.AvailablePhysicalMemory = _sysinfo.freeram;
-                value.TotalVirtualMemory = _sysinfo.totalswap;
-                value.AvailableVirtualMemory = _sysinfo.freeswap;
-                value.UsedPercentage = (int)((_sysinfo.totalram - _sysinfo.freeram) / _sysinfo.totalram);
-            }
-
-#if NET7_0_OR_GREATER
-
-        /// <summary>
-        /// 返回整个系统统计信息,<see href="https://linux.die.net/man/2/sysinfo"/>
-        /// </summary>
-        /// <remarks>int sysinfo(struct sysinfo *info);</remarks>
-        /// <param name="info"></param>
-        /// <returns></returns>
-        [LibraryImport("libc.so.6", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.SysInt)]
-        public static partial int sysinfo(ref Sysinfo info);
-
-#else
-
-        /// <summary>
-        /// 返回整个系统统计信息,<see href="https://linux.die.net/man/2/sysinfo"/>
-        /// </summary>
-        /// <remarks>int sysinfo(struct sysinfo *info);</remarks>
-        /// <param name="info"></param>
-        /// <returns></returns>
-        [DllImport("libc.so.6", CharSet = CharSet.Auto, SetLastError = true)]
-            [return: MarshalAs(UnmanagedType.SysInt)]
-            public static extern int sysinfo(ref Sysinfo info);
-
-#endif
-
-
     }
 }

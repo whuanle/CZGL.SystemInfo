@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 
 namespace CZGL.SystemInfo
 {
@@ -74,10 +75,23 @@ namespace CZGL.SystemInfo
         public bool IsSupportIpv4 => _instance.Supports(NetworkInterfaceComponent.IPv4);
 
         /// <summary>
-        /// 获取分配给此接口的任意广播 IP 地址
+        /// 获取分配给此接口的任意广播 IP 地址。只支持 Windows
         /// </summary>
         /// <remarks>一般情况下为空数组</remarks>
-        public IPAddress[] AnycastAddresses => _instance.GetIPProperties().AnycastAddresses.Select(x => x.Address).ToArray();
+        public IPAddress[] AnycastAddresses
+        {
+            get
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    return _instance.GetIPProperties().AnycastAddresses.Select(x => x.Address).ToArray();
+                }
+                else
+                {
+                    return Array.Empty<IPAddress>();
+                }
+            }
+        }
 
         /// <summary>
         /// 获取分配给此接口的多播地址，ipv4、ipv6
@@ -126,21 +140,25 @@ namespace CZGL.SystemInfo
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotSupportedException">当前网卡不支持 IPV4</exception>
-        public Ipv4Speed GetIpv4Speed()
+        public Rate GetIpv4Speed()
         {
-            if(!IsSupportIpv4) throw new NotSupportedException("当前网卡不支持 IPV4");
-            return new Ipv4Speed(_instance);
+            // 当前网卡不支持 IPV4
+            if (!IsSupportIpv4) return default;
+            var ipv4Statistics = _instance.GetIPv4Statistics();
+            var speed = new Rate(DateTime.Now, ipv4Statistics.BytesReceived, ipv4Statistics.BytesSent);
+            return speed;
         }
 
         /// <summary>
         /// 计算 IPV4 、IPV6 的网络流量
         /// </summary>
         /// <returns></returns>
-        public Ipv46Speed Ipv46Speed()
+        public Rate IpvSpeed()
         {
-            return new Ipv46Speed(_instance);
+            var ipvStatistics = _instance.GetIPStatistics();
+            var speed = new Rate(DateTime.Now, ipvStatistics.BytesReceived, ipvStatistics.BytesSent);
+            return speed;
         }
-
 
 
         /// <summary>
@@ -150,6 +168,24 @@ namespace CZGL.SystemInfo
         public static NetworkInfo[] GetNetworkInfos()
         {
             return NetworkInterface.GetAllNetworkInterfaces().Select(x => new NetworkInfo(x)).ToArray();
+        }
+
+        /// <summary>
+        /// 计算网络流量速率
+        /// </summary>
+        /// <param name="oldRate"></param>
+        /// <param name="newRate"></param>
+        /// <returns></returns>
+        public static (SizeInfo Received, SizeInfo Sent) GetSpeed(Rate oldRate, Rate newRate)
+        {
+            var receive = newRate.ReceivedLength - oldRate.ReceivedLength;
+            var send = newRate.SendLength - oldRate.SendLength;
+            var interval = Math.Round((newRate.StartTime - oldRate.StartTime).TotalSeconds, 2);
+
+            long rSpeed = (long)(receive / interval);
+            long sSpeed = (long)(send / interval);
+
+            return (SizeInfo.Get(rSpeed), SizeInfo.Get(sSpeed));
         }
     }
 }

@@ -132,7 +132,5 @@ namespace CZGL.SystemInfo
         /// 操作系统内存页一页的字节数
         /// </summary>
         public static int MemoryPageSize => Environment.SystemPageSize;
-
-
     }
 }
