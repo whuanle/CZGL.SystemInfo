@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 
 namespace CZGL.SystemInfo
@@ -159,6 +160,26 @@ namespace CZGL.SystemInfo
             return speed;
         }
 
+        /// <summary>
+        /// 获取所有 IP 地址
+        /// </summary>
+        /// <returns></returns>
+        public static IPAddress[] GetIPAddresses()
+        {
+            var hostName = Dns.GetHostName();
+            return Dns.GetHostAddresses(hostName);
+        }
+
+        /// <summary>
+        /// 获取当前真实 IP
+        /// </summary>
+        /// <returns></returns>
+        public static IPAddress? TryGetRealIpv4()
+        {
+            var addrs = GetIPAddresses();
+            var ipv4 = addrs.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork);
+            return ipv4;
+        }
 
         /// <summary>
         /// 获取此主机中所有网卡接口

@@ -15,12 +15,7 @@ namespace CZGL.SystemInfo
         /// <summary>
         /// 获取 1，5，15 分钟内存的平均使用量，数组大小为 3
         /// </summary>
-#if NET7_0_OR_GREATER
-#else
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-#endif
-        public ulong[] loads;
-
+        unsafe public fixed ulong loads[3];
         /// <summary>
         /// 总物理内存
         /// </summary>
@@ -74,10 +69,6 @@ namespace CZGL.SystemInfo
         /// <summary>
         /// Padding to 64 bytes
         /// </summary>
-#if NET7_0_OR_GREATER
-#else
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-#endif
-        public byte[] _f;
+        unsafe public fixed byte _f[64];
     }
 }
