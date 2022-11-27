@@ -182,6 +182,26 @@ namespace CZGL.SystemInfo
         }
 
         /// <summary>
+        /// 获取真实网卡
+        /// </summary>
+        /// <returns></returns>
+        public static NetworkInfo? TryGetRealNetworkInfo()
+        {
+            var realIp = TryGetRealIpv4();
+            if (realIp == null)
+            {
+                return default;
+            }
+            var infos = NetworkInfo.GetNetworkInfos().ToArray();
+            var info = infos.FirstOrDefault(x => x.UnicastAddresses.Any(x => x.MapToIPv4().ToString() == realIp.MapToIPv4().ToString()));
+            if (info == null)
+            {
+                return default;
+            }
+            return info;
+        }
+
+        /// <summary>
         /// 获取此主机中所有网卡接口
         /// </summary>
         /// <returns></returns>

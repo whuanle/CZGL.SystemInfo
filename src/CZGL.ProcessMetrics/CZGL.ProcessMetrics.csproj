@@ -12,7 +12,16 @@
 		</Description>
 		<PackageProjectUrl>https://github.com/whuanle/CZGL.SystemInfo</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/whuanle/CZGL.SystemInfo</RepositoryUrl>
-		<Version>1.2</Version>
+		<Version>2.0</Version>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+	  <WarningLevel>5</WarningLevel>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+	  <WarningLevel>5</WarningLevel>
 	</PropertyGroup>
 
 	<ItemGroup>
