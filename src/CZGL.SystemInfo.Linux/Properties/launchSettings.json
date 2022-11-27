@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "CZGL.SystemInfo.Linux": {
-      "commandName": "Project",
-      "remoteDebugEnabled": false
-    }
-  }
-}

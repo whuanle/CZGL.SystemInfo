@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
 		<ApplicationIcon />
 		<OutputType>Library</OutputType>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -14,6 +14,10 @@
 		<RepositoryUrl>https://github.com/whuanle/CZGL.SystemInfo</RepositoryUrl>
 		<Version>1.2</Version>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="7.0.0" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\CZGL.SystemInfo\CZGL.SystemInfo.csproj" />

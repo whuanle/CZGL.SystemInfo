@@ -1,9 +1,5 @@
 ﻿
 using CZGL.SystemInfo;
-using CZGL.SystemInfo.CPU;
-using CZGL.SystemInfo.CPU.Windows;
-using System.Net;
-using System.Numerics;
 
 public class Program
 {

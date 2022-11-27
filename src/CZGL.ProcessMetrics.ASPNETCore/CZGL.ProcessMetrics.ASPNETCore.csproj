@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <ApplicationIcon />
     <StartupObject />
     <Description>.NET Core 程序监控/度量库，能够将程序中的 GC、CPU、内存等信息记录下来，推送到 Prometheus，然后使用 Grafana 可视化显示。

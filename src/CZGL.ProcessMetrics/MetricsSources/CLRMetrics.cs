@@ -14,10 +14,12 @@ namespace CZGL.ProcessMetrics.MetricsSources
         {
             await Task.Factory.StartNew(() =>
             {
-
+#if NET6_0_OR_GREATER
                 Gauge monitor = metricsCore.CreateGauge("dotnet_lock_contention_total", "Provides a mechanism that synchronizes access to objects.");
                 monitor.Create()
                     .SetValue(Monitor.LockContentionCount);
+#else
+#endif
             });
         }
     }

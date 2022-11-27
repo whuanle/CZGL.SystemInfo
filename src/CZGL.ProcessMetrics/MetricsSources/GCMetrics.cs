@@ -31,6 +31,7 @@ namespace CZGL.ProcessMetrics.MetricsSources
 
 
                 var gcMemoryGauge = metricsCore.CreateGauge("dotnet_gc_memory_info", "Gets garbage collection memory information");
+#if NET6_0_OR_GREATER
                 var gcMemoryInfo = GC.GetGCMemoryInfo();
                 gcMemoryGauge.Create()
                     .AddLabel("fragmented_bytes", gcMemoryInfo.FragmentedBytes.ToString())
@@ -64,6 +65,8 @@ namespace CZGL.ProcessMetrics.MetricsSources
                 var totalAllocatedBytesGauge = metricsCore.CreateGauge("dotnet_total_allocated_bytes", "Gets a count of the bytes allocated over the lifetime of the process.");
                 var totalAllocatedLabels = totalAllocatedBytesGauge.Create();
                 totalAllocatedLabels.SetValue(GC.GetTotalAllocatedBytes());
+#else
+#endif
             });
         }
 
