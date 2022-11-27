@@ -1,6 +1,16 @@
-由于 .NET 7 之后，官方也做了 Prometheus、Metrics 收集，因此使用官方的库来实现：
+由于 .NET 7 之后，官方也做了 Prometheus、Metrics 收集，因此建议使用官方的库来实现：
 
 https://learn.microsoft.com/zh-cn/dotnet/core/diagnostics/metrics-collection
+
+
+
+由于官方都有相应功能了，因此这个库后面应该不会更新接入 Promethues 了。
+
+这个库也不会怎么更新了。
+
+这个库并不是多完善的库，只是封装了一些 API，加上了一些计算方法。
+
+**如果需要使用，建议复制代码到项目中，然后根据需求进行修改**。
 
 
 
@@ -20,9 +30,7 @@ Windows 可以使用 System.Diagnostics.PerformanceCounter 、System.Management.
 
 在新版本中，增加了跨平台获取 CPU、内存、网络、磁盘的功能。
 
-这个库并不是多完善的库，只是封装了一些 API，加上了一些计算方法。
 
-**如果需要使用，建议复制代码到项目中，然后根据需求进行修改**。
 
 ![1669512455914](images/1669512455914.jpg)
 
