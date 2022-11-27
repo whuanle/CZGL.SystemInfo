@@ -2,6 +2,7 @@
 using CZGL.SystemInfo;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,10 +13,10 @@ namespace CZGL.ProcessMetrics.MetricsSources
     /// </summary>
     public class CurrentProcessMetrics : IMerticsSource
     {
-        private static readonly ProcessInfo processInfo;
+        private static readonly Process processInfo;
         static CurrentProcessMetrics()
         {
-            processInfo = ProcessInfo.GetCurrentProcess();
+            processInfo = Process.GetCurrentProcess();
         }
 
         private ProcessMetricsCore _metricsCore;
@@ -26,7 +27,6 @@ namespace CZGL.ProcessMetrics.MetricsSources
             List<Task> tasks = new List<Task>()
             {
                 ProcessThreads(),
-                CpuUsage(),
                 Memory(),
                 Info()
             };
@@ -43,7 +43,7 @@ namespace CZGL.ProcessMetrics.MetricsSources
                     "Common resource handles includefile descriptors,network sockets,database connections,process identifiers(PIDs), andjob IDs");
                 openHandles.Create()
                 .AddLabel("metrics_type", "procsss")
-                .SetValue(processInfo.Process.HandleCount);
+                .SetValue(processInfo.HandleCount);
 
                 // 可用辅助线程的数目
                 // 可用异步 I/O 线程的数目
@@ -75,21 +75,7 @@ namespace CZGL.ProcessMetrics.MetricsSources
                 var numThreads = _metricsCore.CreateGauge("dotnet_process_num_threads_count", "Total number of threads");
                 numThreads.Create()
                 .AddLabel("metrics_type", "procsss")
-                .SetValue(processInfo.Process.Threads.Count);
-            });
-        }
-
-        /// <summary>
-        /// CPU 使用率
-        /// </summary>
-        /// <returns></returns>
-        private async Task CpuUsage()
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                Gauge processCpuage = _metricsCore.CreateGauge("dotnet_process_cpu_usage", "This process cpu usage");
-                processCpuage.Create()
-                    .SetValue(ProcessInfo.GetCpuUsage(processInfo));
+                .SetValue(processInfo.Threads.Count);
             });
         }
 
@@ -100,7 +86,7 @@ namespace CZGL.ProcessMetrics.MetricsSources
             {
                 Gauge processMemory = _metricsCore.CreateGauge("dotnet_process_physical_used_memory_bytes", "Memory already used by the current program");
                 processMemory.Create()
-                    .SetValue(processInfo.PhysicalUsedMemory);
+                    .SetValue(processInfo.PeakWorkingSet64);
             });
         }
 
@@ -111,11 +97,11 @@ namespace CZGL.ProcessMetrics.MetricsSources
             {
                 Gauge processMemory = _metricsCore.CreateGauge("dotnet_process_info", "Process info");
                 var labels = processMemory.Create()
-                    .AddLabel("id", processInfo.ProcessId.ToString())
+                    .AddLabel("id", processInfo.Id.ToString())
                     .AddLabel("name", processInfo.ProcessName)
                     .AddLabel("start_time", processInfo.StartTime.ToString("yyyy/MM/dd HH:mm:ss"))
                     .AddLabel("tick_run_time_ms", Environment.TickCount.ToString())
-                    .AddLabel("physical_used_memory_bytes", processInfo.PhysicalUsedMemory.ToString());
+                    .AddLabel("physical_used_memory_bytes", processInfo.PeakWorkingSet64.ToString());
                 try
                 {
                     labels.AddLabel("base_priority", processInfo.BasePriority.ToString());

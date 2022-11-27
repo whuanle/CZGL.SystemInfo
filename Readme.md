@@ -1,3 +1,9 @@
+由于 .NET 7 之后，官方也做了 Prometheus、Metrics 收集，因此使用官方的库来实现：
+
+https://learn.microsoft.com/zh-cn/dotnet/core/diagnostics/metrics-collection
+
+
+
 ### 简介
 
 CZGL.SystemInfo 是一个支持 Windows 和 Linux 等平台的能够获取机器硬件信息、采集机器资源信息、监控进程资源的库。
@@ -12,9 +18,23 @@ Windows 可以使用 System.Diagnostics.PerformanceCounter 、System.Management.
 
 
 
+在新版本中，增加了跨平台获取 CPU、内存、网络、磁盘的功能。
+
+这个库并不是多完善的库，只是封装了一些 API，加上了一些计算方法。
+
+**如果需要使用，建议复制代码到项目中，然后根据需求进行修改**。
+
+![1669512455914](images/1669512455914.jpg)
+
+
+
+
+
 ### 预览
 
 CZGL.ProcessMetrics 是一个 Metrics 库，能够将程序的 GC、CPU、内存、机器网络、磁盘空间等信息记录下来，使用 Prometheus 采集信息，然后使用 Grafana 显示。支持 .NET Core 和 .NET Framework 应用，例如 Wpf、Winfrom 应用等。
+
+
 
 视频地址：
 
@@ -137,6 +157,346 @@ gcCounterLabels
 
 
 
+
+
+视频地址：
+
+[https://www.bilibili.com/video/BV18y4y1K7Ax/](https://www.bilibili.com/video/BV18y4y1K7Ax/)
+
+教程地址：[https://github.com/whuanle/CZGL.SystemInfo/blob/primary/docs/Metrics.md](https://github.com/whuanle/CZGL.SystemInfo/blob/primary/docs/Metrics.md)
+
+效果图预览：
+
+![3](images/3.png)
+
+![5](images/5.png)
+
+
+
+多机器多应用效果：
+
+![13](images/13.png)
+
+
+
+### 安装 ProcsssMetrics
+
+只需要通过 Nuget 安装一个库，即可快速为程序添加资源监视，接着可将监控数据收集起来，让 Prometheus 被动捕获或主动推送。
+
+支持三种启动方式。
+
+
+
+#### 监控 URL
+
+有两种方式使用 Metrics，第一种是使用内置的 HttpListener，不需要放到 Web 中即可独立提供 URL 访问，适合 winform、wpf 或纯 控制台等应用。但是使用 HttpListener，需要使用管理员方式启动应用才能正常运行。
+
+使用方法：
+
+```csharp
+using CZGL.ProcessMetrics;
+... ...
+MetricsServer metricsServer = new MetricsServer("http://*:1234/metrics/");
+metricsServer.Start();
+```
+
+> 此方式需要暴露端口和 URL ，由 Prometheus 捕获。
+
+
+
+#### ASP.NET Core
+
+另外一种是使用 ASP.NET Core，Metrics 作为中间件加入到 Web 应用中，此时使用的是 kestrel 。
+
+在 Nuget 中，搜索 `CZGL.ProcessMetrics.ASPNETCore` 包，然后使用中间件生成 Metrics 端点。
+
+```csharp
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.ProcessMetrices("/metrics");
+            });
+```
+
+
+
+访问相应的 URL，可以看到有很多信息输出，这些都是 Prometheus 数据的格式。
+
+```
+http://127.0.0.1:1234/metrics
+```
+
+![10](images/10.png)
+
+
+
+#### 主动推送
+
+主动推送方式，可以不需要绑定端口，也不需要暴露 URL，Wpf、Winfrom 应用可以更加方便地推送数据，也可以将外网内网隔离开来。
+
+部署 Pushgateway：
+
+```shell
+docker run -d \
+  --name=pg \
+  -p 9091:9091 \
+  prom/pushgateway
+```
+
+> 端口是 9091；也可以使用别的方式部署。
+
+
+
+然后在 Prometheus 的 prometheus.yml 文件最后加上：
+
+```shell
+  - job_name: 'linux-pushgateway'
+    metrics_path: /metrics
+    static_configs:
+    - targets: ['172.16.2.101:9091']
+```
+
+
+
+推送监控信息：
+
+```csharp
+MetricsPush metricsPush = new MetricsPush("http://127.0.0.1:9091");
+var result = await metricsPush.PushAsync();
+```
+
+
+
+### 自定义 EventSource
+
+在 .NET 中，内置了以下 EventSource：
+
+```
+             * Microsoft-Windows-DotNETRuntime
+             * System.Runtime
+             * Microsoft-System-Net-Http
+             * System.Diagnostics.Eventing.FrameworkEventSource
+             * Microsoft-Diagnostics-DiagnosticSource
+             * Microsoft-System-Net-Sockets
+             * Microsoft-System-Net-NameResolution
+             * System.Threading.Tasks.TplEventSource
+             * System.Buffers.ArrayPoolEventSource
+             * Microsoft-System-Net-Security
+             * System.Collections.Concurrent.ConcurrentCollectionsEventSource
+```
+
+
+
+这些 Eventsource 是实现 Metrics、Log、Tracing 的绝佳数据来源，例如在 System.Runtime 中，可以获得以下信息：
+
+```
+[System.Runtime]
+    % Time in GC since last GC (%)                         0
+    Allocation Rate / 1 sec (B)                            0
+    CPU Usage (%)                                          0
+    Exception Count / 1 sec                                0
+    GC Heap Size (MB)                                      4
+    Gen 0 GC Count / 60 sec                                0
+    Gen 0 Size (B)                                         0
+    Gen 1 GC Count / 60 sec                                0
+    Gen 1 Size (B)                                         0
+    Gen 2 GC Count / 60 sec                                0
+    Gen 2 Size (B)                                         0
+    LOH Size (B)                                           0
+    Monitor Lock Contention Count / 1 sec                  0
+    Number of Active Timers                                1
+    Number of Assemblies Loaded                          140
+    ThreadPool Completed Work Item Count / 1 sec           3
+    ThreadPool Queue Length                                0
+    ThreadPool Thread Count                                7
+    Working Set (MB)                                      63
+```
+
+
+
+在 CZGL.ProcessMetrics 中，默认只监控了 System.Runtime，如果需要捕获其它 EventSource，则可以通过配置添加：
+
+```csharp
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.ProcessMetrices("/metrics", options =>
+                {
+                    // 监控 CLR 中的事件
+                    options.ListenerNames.Add(EventNames.System_Runtime);
+                    // 监控 ASP.NET Core 中的请求
+                    options.ListenerNames.Add(EventNames.AspNetCore_Http_Connections);
+                    
+                    options.ListenerNames.Add("自定义的EventSource名称");
+                    
+                    // 无特殊需求，请不要使用
+                    // options.Labels.Add("other", "自定义标识");
+
+                    // 自定义要监控的数据源，可以自由使用
+                    // options.Assemblies.Add(..);
+                });
+            });
+```
+
+另外，你也可以自行添加 EventSource，这些 EventSource 可以使用 dotnet-counter、dotnet-dump 等工具捕获。
+
+你可以参考这里，编写 EventSource：[https://github.com/microsoft/dotnet-samples/blob/master/Microsoft.Diagnostics.Tracing/EventSource/docs/EventSource.md](https://github.com/microsoft/dotnet-samples/blob/master/Microsoft.Diagnostics.Tracing/EventSource/docs/EventSource.md)
+
+
+
+### 自定义监控数据
+
+在 CZGL.ProcessMetrics 中，内置了一些数据源，这些数据可能来自机器、可能来自应用，但是不一定符合你的需求，你可以自定义添加一些需要的数据指标，例如 wpf 的鼠标点击次数等。
+
+只需要继承 `IMerticsSource` 接口即可。
+
+示例如下：
+
+```csharp
+    public class CLRMetrics : IMerticsSource
+    {
+        public async Task InvokeAsync(ProcessMetricsCore metricsCore)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                Gauge monitor = metricsCore.CreateGauge("dotnet_lock_contention_total", "Provides a mechanism that synchronizes access to objects.");
+                monitor.Create()
+                    .AddLabel("process_name","myapp")
+                    .SetValue(Monitor.LockContentionCount);
+            });
+        }
+    }
+```
+
+
+
+然后添加需要自定义数据源的程序集，在程序启动时，会主动扫描。
+
+```csharp
+endpoints.ProcessMetrices("/metrics", options =>
+{
+// 监控 CLR 中的事件
+options.ListenerNames.Add(EventNames.System_Runtime);
+options.Labels.Add("other", "自定义标识");
+
+ // 自定义要监控的数据源
+options.Assemblies.Add(typeof(CZGL.ProcessMetrics.MetricsPush).Assembly);
+});
+```
+
+
+
+
+
+### 搭建 Prometheus/Grafana
+
+这里我们使用 Docker 来搭建监控平台。
+
+拉取镜像：
+
+```shell
+docker pull prom/prometheus
+docker pull grafana/grafana 
+```
+
+在 `/opt/prometheus` 目录下，新建一个 `prometheus.yml` 文件，其内容如下：
+
+```yaml
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+    - targets: ['localhost:9090']
+
+
+  - job_name: 'processmetrice'
+    metrics_path: '/metrics'
+    static_configs:
+    - targets: ['123.123.123.123:1234']
+```
+
+> 请替换最后一行的 IP。
+
+
+
+使用容器启动 Prometheus：
+
+```shell
+docker run  -d   -p 9090:9090   -v /opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml    prom/prometheus
+```
+
+使用容器启动 Grafana：
+
+```shell
+mkdir /opt/grafana-storage
+chmod 777 -R /opt/grafana-storage
+docker run -d   -p 3000:3000   --name=grafana   -v /opt/grafana-storage:/var/lib/grafana   grafana/grafana
+```
+
+
+
+打开 9090 端口，在菜单栏中打开 `Status-Targets`，可以看到有相关记录。
+
+![6](images/6.png)
+
+接着，访问 3000 端口，打开 Grafana，初始账号密码都是 admin 。
+
+
+
+### 配置 Grafana
+
+首先我们要为 Grafana 获取 Prometheus 中的监控数据，我们要添加一个数据源。
+
+![11](images/11.jpg)
+
+选择 Prometheus，按照提示，填写好 `HTTP-URL` 即可。
+
+![12](images/12.jpg)
+
+
+
+接着，下载笔者定制好的 Jsom Model，文件名为 `CZGL.ProcessMetrics.json`。
+
+下载地址：
+[https://github.com/whuanle/CZGL.SystemInfo/releases/tag/v1.0](https://github.com/whuanle/CZGL.SystemInfo/releases/tag/v1.0)
+
+然后导入模型文件。
+
+![7](images/7.jpg)
+![8](images/8.png)
+
+
+
+即可看到监控界面。
+
+![metrics](images/metrics.gif)
+
+
+
 ### dotnet tool 体验
 
 目前做了个简单的 dotnet 工具，无需 SDK，runtime 下即可使用。
@@ -250,76 +610,102 @@ Web程序核心框架版本    :    3.1.0
 
 
 
-#### ProcessInfo
+#### CPU
 
-需要使用超级管理员启动程序，才能使用此功能；
+获取 CPU 消耗时间、获取 CPU 使用率。
 
-记录某一时刻操作系统的资源数据。此 API 使用时有些地方需要注意，比较监控和刷新信息会消耗一些性能资源。
+总的来说，计算的 CPU 使用率会比任务管理器低一些。
 
-通过两个静态方法，可以获取系统的进程列表：
+![cpu](images/cpu.gif)
 
-```csharp
-Dictionary<int,string> value = ProcessInfo.GetProcessList();
-ProcessInfo[] value = ProcessInfo.GetProcesses();
-```
-
-或者通过指定的进程 ID 获取：
+示例代码：
 
 ```csharp
-ProcessInfo value = ProcessInfo.GetProcess(666);
+    public static void Main(string[] args)
+    {
+        CPUTime v1 = CPUHelper.GetCPUTime();
+
+        while (true)
+        {
+            Thread.Sleep(1000);
+            var v2 = CPUHelper.GetCPUTime();
+            var value = CPUHelper.CalculateCPULoad(v1, v2);
+            v1 = v2;
+            Console.Clear();
+            Console.WriteLine($"{(int)(value * 100)} %");
+        }
+    }
 ```
 
+有针对每个平台的封装。
+
+![1669510996691](images/1669510996691.jpg)
 
 
-获得 ProcessInfo 对象后，必须使用 `Refresh()` 方法刷新、截取当前进程状态的信息，才能获得信息。
-
-如：
-
-```csharp
-ProcessInfo thisProcess = ProcessInfo.GetCurrentProcess();	// 获取当前进程的 ProcessInfo 对象
-thisProcess.Refresh();
-```
-
-只有当你使用 `.Refresh()` 时，才会开始初始化，并生成相应的信息。
-
-获得的信息不是动态的，而且保存某一个节点时刻的进程状态数据，所以如果需要动态更新，则需要再次执行  `.Refresh()` 方法。
-
-ProcessInfo 能够获得进程使用了多少内存以及 CPU 时间，但是无法获得此进程的物理内存使用率以及CPU使用率。如果想获得使用比率，需要调用操作系统 API，或者使用操作系统的其它库，如 Windows 的 WMI。 
-
-如果你想获得一个进程的 CPU 消耗的比例，可以使用静态方法：
-
-```csharp
-decimal value = ProcessInfo.GetCpuPercentage(666);
-```
-
-大约 2 秒会刷新一次，所以请勿一直等待此 API 返回数据，适合单独计算，不适合跟其它数据综合。此 API 监控的 CPU 占比不是很准确。 
-
-CPU 是真的难求，你可以查看论文：
-
-https://www.semanticscholar.org/paper/Late-Breaking%3A-Measuring-Processor-Utilization-in-Friedman/d7e312e32cd6bb6cac4531389c5cc7c80481b9b5?p2df
-
-不断刷新 CPU 数据：
-
-```csharp
-            while (true)
-            {
-                var tmp = Convert.ToInt32(Console.ReadLine());
-                var process = ProcessInfo.GetProcess(tmp);
-                process.Refresh();                          // 刷新进程数据
-                var cpu = ProcessInfo.GetCpuPercentage(process.ProcessId);
-                Console.WriteLine($"进程 {process.ProcessName} CPU ： {cpu * 100}%");
-            }
-```
 
 
 
 #### 内存监控
 
-PhysicalUsedMemory 属性值返回的值表示进程使用的可分页系统内存的当前大小（以字节为单位）。 系统内存是操作系统使用的物理内存，分为分页和非分页的池。 当不可分页内存未使用时，可以将其传输到磁盘上的虚拟内存分页文件中。 
+内存部分去掉了大量没用的 API，只保留跟获取系统内存相关的方法。
 
-| 属性名称           | 说明                 | 示例     |
-| ------------------ | -------------------- | -------- |
-| PhysicalUsedMemory | 已用的物理内存字节数 | 17498112 |
+![1669511073709](images/1669511073709.jpg)
+
+
+
+使用方法：
+
+```csharp
+            var memory = MemoryHelper.GetMemoryValue();
+            Console.WriteLine($"已用内存：{memory.UsedPercentage * 100}%");
+```
+
+![memory](images/memory.gif)
+
+
+
+```csharp
+    /// <summary>
+    /// 内存值表示
+    /// </summary>
+    public struct MemoryValue
+    {
+        /// <summary>
+        /// 物理内存字节数
+        /// </summary>
+        public ulong TotalPhysicalMemory { get; private set; }
+
+        /// <summary>
+        /// 可用的物理内存字节数
+        /// </summary>
+        public ulong AvailablePhysicalMemory { get; private set; }
+
+        /// <summary>
+        /// 已用物理内存字节数
+        /// </summary>
+        public ulong UsedPhysicalMemory => TotalPhysicalMemory - AvailablePhysicalMemory;
+
+        /// <summary>
+        /// 已用物理内存百分比，0~100，100表示内存已用尽
+        /// </summary>
+        public double UsedPercentage { get; private set; }
+
+        /// <summary>
+        /// 虚拟内存字节数
+        /// </summary>
+        public ulong TotalVirtualMemory { get; private set; }
+
+        /// <summary>
+        /// 可用虚拟内存字节数
+        /// </summary>
+        public ulong AvailableVirtualMemory { get; private set; }
+
+        /// <summary>
+        /// 已用虚拟内存字节数
+        /// </summary>
+        public ulong UsedVirtualMemory => TotalVirtualMemory - AvailableVirtualMemory;
+    }
+```
 
 
 
@@ -327,7 +713,28 @@ PhysicalUsedMemory 属性值返回的值表示进程使用的可分页系统内�
 
 NetworkInfo 能够获取网络接口信息。
 
-`NetworkInfo.GetNetworkInfo()` 可以获取当前你的电脑正在连接互联网的首选网络设备。
+获取当前真实 IP：
+
+```csharp
+            var realIp = NetworkInfo.TryGetRealIpv4();
+            if (realIp == null)
+            {
+                Console.WriteLine("未能获取网卡，操作终止");
+                return;
+            }
+```
+
+示例：`192.168.3.38`。
+
+
+
+获取当前用于上网的网卡：
+
+```csharp
+var network = NetworkInfo.TryGetRealNetworkInfo();
+```
+
+
 
 如使用 wifi，获取到的就是无线网卡；使用网线上网，获取到的是以太网卡。
 
@@ -371,33 +778,52 @@ https://docs.microsoft.com/zh-cn/dotnet/api/system.net.networkinformation.networ
 
 `NetworkInfo.IsAvailable` 静态属性可以检查当前机器是否能够连接互联网。符合条件的网卡必须是能够运行可以传输数据包，并且不能是本地回环地址。如果你是内网，则可能不需要此API，可以自己 ping 内网其它机器，确保网络畅通。
 
+
+
+![network](images/network.gif)
+
+
+
 实时监控网络速度的使用方法：
 
 ```csharp
-            var info = NetworkInfo.GetNetworkInfo();
-                while (true)
-                {
-                    var tmp = info.GetInternetSpeed(1000);
-                    Console.WriteLine($"网络上传速度：{tmp.Send / 1024} kb/s");
-                    Console.WriteLine($"网络下载速度：{tmp.Received / 1024} kb/s");
-                    Thread.Sleep(500);
-                }
+    public static void Main(string[] args)
+    {
+        CPUTime v1 = CPUHelper.GetCPUTime();
+        var network = NetworkInfo.TryGetRealNetworkInfo();
+        var oldRate = network.GetIpv4Speed();
+        while (true)
+        {
+            Thread.Sleep(1000);
+            var v2 = CPUHelper.GetCPUTime();
+            var value = CPUHelper.CalculateCPULoad(v1, v2);
+            v1 = v2;
+
+            var memory = MemoryHelper.GetMemoryValue();
+            var newRate = network.GetIpv4Speed();
+            var speed = NetworkInfo.GetSpeed(oldRate, newRate);
+            oldRate = newRate;
+            Console.Clear();
+            Console.WriteLine($"CPU:    {(int)(value * 100)} %");
+            Console.WriteLine($"已用内存：{memory.UsedPercentage}%");
+            Console.WriteLine($"上传：{speed.Sent.Size} {speed.Sent.SizeType}/S    下载：{speed.Received.Size} {speed.Received.SizeType}/S");
+        }
+    }
+
 ```
 
 `(int Received, int Send) GetInternetSpeed(int Milliseconds)` 方法可以监控某个的网络传输数据量，时间一般时间设置为 1000 ms。
 
 ```
 Received 是下载的流量
-Send     是上传的流量
+Sent     是上传的流量
 ```
 
 
 
 一般来说，电脑只有一个网卡在连接互联网进行工作，所以可以使用：
 
-```csharp
-static (int Received, int send) GetNowInternetSpeed(int Milliseconds)
-```
+
 
 会自动找到电脑正在用来访问互联网的网卡，并记录流量大小。
 

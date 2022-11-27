@@ -1,6 +1,7 @@
 ﻿using CZGL.SystemInfo;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
@@ -13,7 +14,7 @@ namespace CZGL.ProcessMetrics
     {
         public MetricsOption()
         {
-            var process = ProcessInfo.GetCurrentProcess();
+            var process = Process.GetCurrentProcess();
             _Labels = new Dictionary<string, string>();
             _Labels.Add("machine_name", SystemPlatformInfo.MachineName);
             _Labels.Add("process_name", AppDomain.CurrentDomain.FriendlyName);

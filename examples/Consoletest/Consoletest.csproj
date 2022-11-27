@@ -2,11 +2,6 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\CZGL.ProcessMetrics\CZGL.ProcessMetrics.csproj" />
-  </ItemGroup>
-
 </Project>

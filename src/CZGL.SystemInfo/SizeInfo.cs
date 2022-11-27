@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CZGL.SystemInfo
 {
@@ -9,8 +7,11 @@ namespace CZGL.SystemInfo
     /// </summary>
     public struct SizeInfo
     {
-        private long _OriginSize;
-        public long OriginSize => _OriginSize;
+        /// <summary>
+        /// Byte 长度
+        /// </summary>
+        public long ByteLength { get; private set; }
+
         /// <summary>
         /// 大小
         /// </summary>
@@ -19,73 +20,40 @@ namespace CZGL.SystemInfo
         /// <summary>
         /// 单位
         /// </summary>
-        public SizeType SizeType { get; set; }
+        public UnitType SizeType { get; set; }
 
 
         /// <summary>
-        /// 字节单位转换，以 1024 为一个级别
+        /// 将字节单位转换为合适的单位
         /// </summary>
-        /// <param name="size"></param>
+        /// <param name="byteLength">字节长度</param>
         /// <returns></returns>
-        public static SizeInfo Get(long size)
+        public static SizeInfo Get(long byteLength)
         {
-            SizeInfo info = new SizeInfo();
-
-            if (size < 1024)
+            UnitType unit = 0;
+            decimal number = byteLength;
+            if (byteLength < 1000)
             {
-                return new SizeInfo
+                return new SizeInfo()
                 {
-                    Size = (decimal)(size),
-                    SizeType = SizeType.B,
-                    _OriginSize = size
+                    ByteLength = byteLength,
+                    Size = byteLength,
+                    SizeType = UnitType.B
                 };
             }
-            if (size < 1024 * 1024)
+            // 避免出现 1023B 这种情况；这样 1023B 会显示 0.99KB
+            while (Math.Round(number / 1000) >= 1)
             {
-                return new SizeInfo
-                {
-                    Size = Math.Round((decimal)size / 1024, 1),
-                    SizeType = SizeType.KB,
-                    _OriginSize = size
-                };
-            }
-            if (size < 1024 * 1024 * 1024)
-            {
-                return new SizeInfo
-                {
-                    Size = Math.Round((decimal)(size >> 19) / 2),
-                    SizeType = SizeType.MB,
-                    _OriginSize = size
-                };
+                number = number / 1024;
+                unit++;
             }
 
-            if (size < (long)1024 * 1024 * 1024 * 1024)
+            return new SizeInfo
             {
-                return new SizeInfo
-                {
-                    Size = Math.Round((decimal)(size >> 29) / 2),
-                    SizeType = SizeType.GB,
-                    _OriginSize = size
-                };
-            }
-
-            if (size < (long)1024 * 1024 * 1024 * 1024 * 1024)
-            {
-                return new SizeInfo
-                {
-                    Size = Math.Round((decimal)(size >> 39) / 2),
-                    SizeType = SizeType.TB
-                };
-            }
-
-            if (size < (long)1024 * 1024 * 1024 * 1024 * 1024 * 1024)
-            {
-                return new SizeInfo
-                {
-                    Size = Math.Round((decimal)(size >> 49) / 2),
-                    SizeType = SizeType.TB
-                };
-            }
+                Size = Math.Round(number, 2),
+                SizeType = unit,
+                ByteLength = byteLength
+            };
 
             throw new Exception();
         }
