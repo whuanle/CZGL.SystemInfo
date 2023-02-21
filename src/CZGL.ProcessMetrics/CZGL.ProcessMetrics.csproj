@@ -12,7 +12,7 @@
 		</Description>
 		<PackageProjectUrl>https://github.com/whuanle/CZGL.SystemInfo</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/whuanle/CZGL.SystemInfo</RepositoryUrl>
-		<Version>2.0</Version>
+		<Version>2.1</Version>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	</PropertyGroup>
 

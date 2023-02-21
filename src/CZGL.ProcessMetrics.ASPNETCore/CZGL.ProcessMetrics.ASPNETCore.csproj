@@ -7,7 +7,7 @@
     <StartupObject />
     <Description>.NET Core 程序监控/度量库，能够将程序中的 GC、CPU、内存等信息记录下来，推送到 Prometheus，然后使用 Grafana 可视化显示。
 https://github.com/whuanle/CZGL.SystemInfo</Description>
-    <Version>2.0</Version>
+    <Version>2.1</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
