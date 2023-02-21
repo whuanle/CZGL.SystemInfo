@@ -20,8 +20,8 @@ namespace CZGL.SystemInfo
             {
                 return default;
             }
-            var UsedPercentage = ((info.totalram - info.freeram) / info.totalram);
-            MemoryValue value = new MemoryValue(info.totalram, info.freeram, UsedPercentage, info.totalswap, info.freeswap);
+            var usedPercentage = (((double)info.totalram - info.freeram) / (double)info.totalram) * 100;
+            MemoryValue value = new MemoryValue(info.totalram, info.freeram, (ulong)usedPercentage, info.totalswap, info.freeswap);
             return value;
         }
 
@@ -35,7 +35,7 @@ namespace CZGL.SystemInfo
         /// <returns></returns>
         [LibraryImport("libc.so.6", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.I4)]
-        public static partial int sysinfo(ref Sysinfo info);
+        public static partial System.Int32 sysinfo(ref Sysinfo info);
 #else
 
         /// <summary>

@@ -12,7 +12,7 @@
   <PropertyGroup>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>csys</ToolCommandName>
-    <Version>1.0.3.1</Version>
+    <Version>2.1</Version>
     <Description>一个简单的跨平台资源监控工具</Description>
     <PackageId>csys</PackageId>
     <StartupObject>CZGLSystemInfo.Program</StartupObject>
