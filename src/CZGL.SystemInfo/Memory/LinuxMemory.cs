@@ -36,6 +36,7 @@ namespace CZGL.SystemInfo
         [LibraryImport("libc.so.6", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.I4)]
         public static partial System.Int32 sysinfo(ref Sysinfo info);
+
 #else
 
         /// <summary>
@@ -45,8 +46,8 @@ namespace CZGL.SystemInfo
         /// <param name="info"></param>
         /// <returns></returns>
         [DllImport("libc.so.6", CharSet = CharSet.Auto, SetLastError = true)]
-            [return: MarshalAs(UnmanagedType.SysInt)]
-            public static extern int sysinfo(ref Sysinfo info);
+        [return: MarshalAs(UnmanagedType.I4)]
+        public static extern System.Int32 sysinfo(ref Sysinfo info);
 
 #endif
     }
